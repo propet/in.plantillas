@@ -13,7 +13,7 @@ import os
 #############
 
 # Radios minimo y maximo considerados
-Rmin_lab = 100 		# micras
+Rmin_lab = 50 		# micras
 Rmax_lab = 1500 	# micras
 # Steps
 prop_step = 5       # Paso porcentual en la proporcion de MgO en la mezcla
@@ -31,14 +31,15 @@ for percen_MgO in range(50,100+prop_step,prop_step):
 	# Directorios para ordenar por proporciones
 	os.system("sudo mkdir ./scripts/input_MgO-%.1f" % (percen_MgO))
 	# Variacion del radio minimo de particula
-	for Rmin in range(Rmin_lab, Rmax_lab+R_step, R_step):
+	for Rmin in range(Rmin_lab, Rmax_lab, R_step):
 		# Variacion del radio maximo de particula
-		for Rmax in range(Rmin, Rmax_lab+R_step, R_step):
+		for Rmax in range(Rmin, Rmax_lab, R_step):
 			# Carpetas para albergar la geometria y resultados de la simulacion
 			os.system("sudo mkdir ./scripts/input_MgO-%.1f/Rmin_%.0f_Rmax_%.0f" % (percen_MgO, Rmin, Rmax))
 			os.system("sudo cp -R ./meshes ./scripts/input_MgO-%.1f/Rmin_%.0f_Rmax_%.0f/" % (percen_MgO, Rmin, Rmax))
 			os.system("sudo mkdir ./scripts/input_MgO-%.1f/Rmin_%.0f_Rmax_%.0f/post" % (percen_MgO, Rmin, Rmax))
 			os.system("sudo chmod -R 777 ./scripts/")
+
 			# Comando linux 'sed'(String EDitor)
 			# Sustitucion de valores en in.plantilla1, in.plantilla2, in.plantilla3 para el nuevo script
 			os.system("sed -e 's/VAR_n_sizes/%d/g' -e 's/VAR_percen_MgO/%.1f/g' -e 's/VAR_R_min/%.0f/g' \
@@ -105,3 +106,9 @@ for percen_MgO in range(50,100+prop_step,prop_step):
 			os.system("sudo mv scripts/%s/tempfile scripts/%s/in1.MgO_%.1f_Rmin_%.0f_Rmax_%.0f" \
 			  % ('input_MgO-%.1f/Rmin_%.0f_Rmax_%.0f' % (percen_MgO, Rmin, Rmax), \
 			  'input_MgO-%.1f/Rmin_%.0f_Rmax_%.0f' % (percen_MgO, Rmin, Rmax), percen_MgO, Rmin, Rmax))
+
+			# Genera archivos para la ejecucion de la simulacion completa
+			#os.system("sudo cp ./ejecuta ./scripts/input_MgO-%.1f/Rmin_%.0f_Rmax_%.0f/" % (percen_MgO, Rmin, Rmax))
+			os.system("sed -e 's/proporcion/%.1f/g' -e 's/radioMinimo/%.0f/g' -e 's/radioMaximo/%.0f/g' \
+			  ./ejecuta > scripts/%s/ejecuta" % (percen_MgO, Rmin, Rmax,
+			  'input_MgO-%.1f/Rmin_%.0f_Rmax_%.0f' % (percen_MgO, Rmin, Rmax)))
