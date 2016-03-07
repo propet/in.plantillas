@@ -31,7 +31,7 @@ for percen_MgO in range(50,100+prop_step,prop_step):
 	# Directorios para ordenar por proporciones
 	os.system("sudo mkdir ./scripts/input_MgO-%.1f" % (percen_MgO))
 	# Variacion del radio minimo de particula
-	for Rmin in range(Rmin_lab, Rmax_lab, R_step):
+	for Rmin in range(Rmin_lab, Rmax_lab+R_step, R_step):
 		# Variacion del radio maximo de particula
 		for Rmax in range(Rmin, Rmax_lab+R_step, R_step):
 			# Carpetas para albergar la geometria y resultados de la simulacion

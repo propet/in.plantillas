@@ -78,7 +78,7 @@ variable 			shear_modulus equal ${E_Al2O3}/(2*(1+${nu_Al2O3}))
 variable 			rayleigh_time equal 3.141592*${R_min}*(sqrt(${rho_Al2O3}/${shear_modulus})/(0.1631*${nu_Al2O3}+0.8766))
 
 # TimeStep
-variable 			timestep equal 1.5*${rayleigh_time}
+variable 			timestep equal 0.8*${rayleigh_time}
 
 # Altura prensa rapida [mm]
 variable 			h_prensaRapida equal 13
@@ -98,6 +98,7 @@ variable 			s_enTimeSteps equal 1e6/${timestep}
 # Dump every ...
 variable 			100fps equal ceil(${s_enTimeSteps}/100)
 variable 			1000fps equal ceil(${s_enTimeSteps}/1000)
+variable 			30fps equal ceil(${s_enTimeSteps}/30)
 
 
 ###########################################################
@@ -181,9 +182,9 @@ run 1
 #unfix				ctg
 
 #dump commands
-dump				dmp all custom ${100fps} post/dump*.pruebas id type type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius
+dump				dmp all custom ${30fps} post/dump*.pruebas id type type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius
 fix 				dumpText all print 200 "${ForceX} ${ForceY} ${ForceZ}" screen no title "Fx[N] Fy[N] Fz[N]" file fuerzasPrensa2.txt
-dump 				dmpstl all mesh/stl ${100fps} post/dump*.stl
+dump 				dmpstl all mesh/stl ${30fps} post/dump*.stl
 
 #run
 
