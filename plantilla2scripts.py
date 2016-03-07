@@ -53,6 +53,10 @@ for percen_MgO in range(50,100+prop_step,prop_step):
 			  -e 's/VAR_R_max/%.0f/g' in.plantilla3 > scripts/%s/in3.MgO_%.1f_Rmin_%.0f_Rmax_%.0f" % (n_sizes,
 			  percen_MgO, Rmin, Rmax, 'input_MgO-%.1f/Rmin_%.0f_Rmax_%.0f' % (percen_MgO, Rmin, Rmax), percen_MgO,
 			  Rmin, Rmax))
+			os.system("sed -e 's/VAR_n_sizes/%d/g' -e 's/VAR_percen_MgO/%.1f/g' -e 's/VAR_R_min/%.0f/g' \
+			  -e 's/VAR_R_max/%.0f/g' in.plantilla4 > scripts/%s/in4.MgO_%.1f_Rmin_%.0f_Rmax_%.0f" % (n_sizes,
+			  percen_MgO, Rmin, Rmax, 'input_MgO-%.1f/Rmin_%.0f_Rmax_%.0f' % (percen_MgO, Rmin, Rmax), percen_MgO,
+			  Rmin, Rmax))
 
 			#############################################################################
 			# Lineas para el input script con los radios y las plantillas de particulas #

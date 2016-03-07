@@ -22,7 +22,7 @@ variable 			prop_Al2O3_size equal ${prop_Al2O3}/${n_sizes}
 ### Initialization
 
 # log name
-variable 			log_name string log3.liggghts
+variable 			log_name string log4.liggghts
 
 # Variables, paso de si a micro	
 
@@ -126,13 +126,10 @@ fix 				m6 all property/global cohesionEnergyDensity peratomtypepair 2 ${CED_MgO
 
 
 # Import mesh from cad:
-fix 				cad1 all mesh/surface file meshes/plato_8mm.stl type 1 scale ${scale}
-fix 				prensa all mesh/surface/stress file meshes/prensa_fina_${h_prensaRapida}.stl type 1 scale ${scale} stress on
-fix 				move all move/mesh mesh prensa linear 0. 0. 0.05
-
+fix 				cad0 all mesh/surface file meshes/base0.stl type 1 scale ${scale}
 
 # Use the imported mesh as granular wall
-fix 				granwalls all wall/gran model hertz tangential history  mesh n_meshes 2 meshes cad1 prensa
+fix 				granwalls all wall/gran model hertz tangential history  mesh n_meshes 1 meshes cad0
 
 
 # Define the physics

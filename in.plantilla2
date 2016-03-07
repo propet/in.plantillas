@@ -22,7 +22,7 @@ variable 			prop_Al2O3_size equal ${prop_Al2O3}/${n_sizes}
 ### Initialization
 
 # log name
-variable 			log_name string log.liggghts
+variable 			log_name string log2.liggghts
 
 # Variables, paso de si a micro	
 
