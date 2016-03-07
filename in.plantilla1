@@ -220,4 +220,4 @@ dump 				dmpstl all mesh/stl ${1000fps} post/dump*.stl
 
 #run
 
-run 				${runUpTo1} every 10 "if '${ForceZ}>${target_force}' then quit"
+run 				${runUpTo1} every 100 "if '${ForceZ}>${target_force}' then quit"
