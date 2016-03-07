@@ -70,10 +70,8 @@ variable 			R_in equal ${radio}-${R_max}
 # Plato
 variable 			scale equal 1e3
 
-# Prensa
-variable 			com equal 0.03e6
-variable 			target_force1 equal -1000e9
-variable 			target_force2 equal 10e9
+# Fuerza tope para la prensa rapida [N]
+variable 			target_force equal 10000
 
 # Gravedad
 variable 			gravity equal 9.81e-6
@@ -106,7 +104,7 @@ variable 			1000fps equal ceil(${s_enTimeSteps}/1000)
 
 ###########################################################
 # Cuantos segundos dura la simulacion?
-variable 			runUpTo1 equal ceil(${t_prensaRapida}*10^-6*${s_enTimeSteps})
+variable 			runUpTo1 equal ceil(10*${s_enTimeSteps})
 # Procentaje en volumen de insercion en factory2
 variable 			per equal 0.8
 ###########################################################
@@ -169,7 +167,7 @@ fix pts1 all particletemplate/sphere 1 atom_type 2 density constant ${rho_Al2O3}
 # Fabricas de particulas
 region 				factory2 cylinder z 0 0 ${R_in} ${z_lo2} ${z_hi2} units box
 
-fix 				ins2 all insert/pack seed 1001 distributiontemplate pdd2 insert_every once overlapcheck yes maxattempt 10000 volumefraction_region ${per} region factory2 ntry_mc 1000000 
+fix 				ins2 all insert/pack seed 1001 distributiontemplate pdd2 insert_every once overlapcheck yes maxattempt 1000 volumefraction_region ${per} region factory2 ntry_mc 1000000 
 
 
 # Import mesh from cad:
@@ -217,9 +215,9 @@ run 1
 
 #dump commands
 dump				dmp all custom ${1000fps} post/dump*.pruebas id type type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius
-fix 				dumpText all print 200 "${ForceX} ${ForceY} ${ForceZ}" screen no title "Fx[N] Fy[N] Fz[N]" file fuerzasPrensa1.txt
+fix 				dumpText all print 100 "${ForceX} ${ForceY} ${ForceZ}" screen no title "Fx[N] Fy[N] Fz[N]" file fuerzasPrensa1.txt
 dump 				dmpstl all mesh/stl ${1000fps} post/dump*.stl
 
 #run
 
-run 				${runUpTo1} upto
+run 				${runUpTo1} every 100 "if '${ForceZ}>${target_force}' then quit"
