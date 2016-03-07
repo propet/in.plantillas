@@ -144,7 +144,7 @@ fix 				grav all gravity ${gravity} vector 0.0 0.0 -1.0
 # Time step
 timestep 			${timestep}
 # Thermodynamic output settings
-thermo_style		custom step atoms ke cpu
+thermo_style		custom step atoms ke time cpu
 thermo 				1000
 thermo_modify 		norm no lost ignore  # ignora los atomos perdidos
 

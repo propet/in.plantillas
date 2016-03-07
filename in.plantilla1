@@ -85,11 +85,11 @@ variable 			shear_modulus equal ${E_Al2O3}/(2*(1+${nu_Al2O3}))
 variable 			rayleigh_time equal 3.141592*${R_min}*(sqrt(${rho_Al2O3}/${shear_modulus})/(0.1631*${nu_Al2O3}+0.8766))
 
 # TimeStep
-variable 			timestep equal 0.38*${rayleigh_time}
+variable 			timestep equal 1*${rayleigh_time}
 
 
 # Velocidad prensa rapida
-variable 			velRapida equal -0.3
+variable 			velRapida equal -0.1
 # Altura prensa rapida [mm]
 variable 			h_prensaRapida equal 13
 # Tiempo en microsegundos hasta llegar a 8mm de altura
@@ -169,7 +169,7 @@ fix pts1 all particletemplate/sphere 1 atom_type 2 density constant ${rho_Al2O3}
 # Fabricas de particulas
 region 				factory2 cylinder z 0 0 ${R_in} ${z_lo2} ${z_hi2} units box
 
-fix 				ins2 all insert/pack seed 1001 distributiontemplate pdd2 insert_every once overlapcheck yes maxattempt 5000 volumefraction_region ${per} region factory2 ntry_mc 1000000 
+fix 				ins2 all insert/pack seed 1001 distributiontemplate pdd2 insert_every once overlapcheck yes maxattempt 10000 volumefraction_region ${per} region factory2 ntry_mc 1000000 
 
 
 # Import mesh from cad:
@@ -202,7 +202,7 @@ fix 				grav all gravity ${gravity} vector 0.0 0.0 -1.0
 # Time step
 timestep 			${timestep}
 # Thermodynamic output settings
-thermo_style		custom step atoms ke cpu
+thermo_style		custom step atoms ke time cpu
 thermo 				1000
 thermo_modify 		norm no lost ignore  # ignora los atomos perdidos
 
