@@ -71,7 +71,7 @@ variable 			R_in equal ${radio}-${R_max}
 variable 			scale equal 1e3
 
 # Fuerza tope para la prensa rapida [N]
-variable 			target_force equal 10000
+variable 			target_force equal 1000000
 
 # Gravedad
 variable 			gravity equal 9.81e-6

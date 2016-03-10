@@ -13,7 +13,7 @@ import os
 #############
 
 # Radios minimo y maximo considerados
-Rmin_lab = 50 		# micras
+Rmin_lab = 100 		# micras
 Rmax_lab = 1500 	# micras
 # Steps
 prop_step = 5       # Paso porcentual en la proporcion de MgO en la mezcla
@@ -25,6 +25,9 @@ n_sizes = 100
 ##########################################
 # Experimentos con distribucion uniforme #
 ##########################################
+
+# Vacia el contenido de scripts para dejar lugar a los nuevos experimentos
+os.system("sudo rm -r ./scripts/*")
 
 # Variacion de las proporciones en la mezcla
 for percen_MgO in range(50,100+prop_step,prop_step):
