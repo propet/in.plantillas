@@ -158,8 +158,8 @@ fix 				ins2 all insert/pack seed 1001 distributiontemplate pdd2 insert_every on
 
 
 # Import mesh from cad:
-fix 				cad1 all mesh/surface file meshes/plato_8mm.stl type 1 scale ${scale}
-fix 				prensa all mesh/surface/stress file meshes/prensa_fina_${h_prensaRapida}.stl type 1 scale ${scale} stress on
+fix 				cad1 all mesh/surface file meshes/plato_8mm_22mm.stl type 1 scale ${scale}
+fix 				prensa all mesh/surface/stress file meshes/prensa_22mm_14.stl type 1 scale ${scale} stress on
 fix 				move all move/mesh mesh prensa linear 0. 0. ${velRapida}
 
 # Fuerzas sobre la cara de la prensa
