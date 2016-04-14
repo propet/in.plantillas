@@ -4,15 +4,25 @@
 
 ################################################
 
+variable 			mu equal VAR_mu
+variable 			sigma equal VAR_sigma
+
 variable 			R_min equal VAR_R_min
 variable 			R_max equal VAR_R_max
 
-variable 			Rmgo equal VAR_Rmgo
-variable 			Ral2o3 equal VAR_Ral2o3
+variable 			n_sizes equal VAR_n_sizes
+variable 			n_templates equal ${n_sizes}*2
 
 variable 			percen_MgO equal VAR_percen_MgO
 variable 			prop_MgO equal ${percen_MgO}/100
 variable 			prop_Al2O3 equal 1-${prop_MgO}
+
+
+################################################
+-----
+
+
+################################################
 
 ###################################################################################################
 
@@ -29,7 +39,7 @@ variable 			zlo equal -0.001e6
 variable 			zhi equal 0.018e6
 
 # Cylinder wall dimensions
-variable 			cylin_radio equal 0.015e6
+variable 			cylin_radio equal 0.011e6
 
 # Youngs Modulus, para la conversion a micro: multiplicar GPa por 10^-3
 variable 			E_MgO equal 2.5e5 # antes e5 
@@ -49,12 +59,13 @@ variable 			nu_MgO equal 0.35
 variable 			skin equal 2*${R_min}
 
 # Dimensiones plato
-variable 			radio equal 0.015e6
+variable 			radio equal 0.011e6
 variable 			h_plato equal 0.008e6
 
 # Dimensiones fabrica de particulas
 variable 			z_lo2 equal ${R_max}
-variable 			z_hi2 equal ${z_lo2}+(${radio}^2*${h_plato})/((${radio}-${R_max})^2)
+#variable 			z_hi2 equal ${z_lo2}+(${radio}^2*${h_plato})/((${radio}-${R_max})^2)
+variable 			z_hi2 equal 0.014e6-${R_max}
 variable 			R_in equal ${radio}-${R_max} 
 
 # Plato
@@ -130,24 +141,18 @@ fix 				m3 all property/global coefficientRestitution peratomtypepair 2 0.5 0.5 
 fix 				m4 all property/global coefficientFriction peratomtypepair 2 0.2 0.2 0.2 0.2
 fix 				m6 all property/global cohesionEnergyDensity peratomtypepair 2 ${CED_MgO} ${CED_Al2O3} ${CED_Al2O3} ${CED_MgO}
 
-# Particle insertion
-
-#aqui el ramdom seed generator no tiene significado porque los parametros de las particulas son ctes.
-fix 				MgO all particletemplate/sphere 911 atom_type 1 density constant ${rho_MgO} radius constant ${R_max}
-fix 				Al2O3 all particletemplate/sphere 1092 atom_type 2 density constant ${rho_Al2O3} radius constant ${R_min}
-fix 				pdd1 all particledistribution/discrete 5430 2 MgO ${prop_MgO} Al2O3 ${prop_Al2O3}
-
-
 
 ###################################################################################################
 ##########################
 # Mass insertion #
 ##########################
-	
-fix pts0 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${Rmgo}
-fix pts1 all particletemplate/sphere 1 atom_type 2 density constant ${rho_Al2O3} radius constant ${Ral2o3}
 
-fix pdd2 all particledistribution/discrete 5300 2 pts0 ${prop_MgO} pts1 ${prop_Al2O3}
+~~~~~
+
+
+
+*****
+
 
 ###################################################################################################
 

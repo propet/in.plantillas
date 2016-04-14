@@ -21,7 +21,7 @@ variable 			zlo equal -0.001e6
 variable 			zhi equal 0.018e6
 
 # Cylinder wall dimensions
-variable 			cylin_radio equal 0.015e6
+variable 			cylin_radio equal 0.011e6
 
 # Youngs Modulus, para la conversion: multiplicar GPa por 10^-3
 variable 			E_MgO equal 2.5e5 # antes e5 

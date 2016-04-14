@@ -19,7 +19,7 @@ end
 
 % Desprecia valores menores al 0.1%
 for i = 1:length(prob)
-	if(prob(i)<0.001)
+	if(prob(i)<0.0001)
 		prob(i) = 0;
 	end
 end
