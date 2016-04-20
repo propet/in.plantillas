@@ -139,7 +139,7 @@ run 1
 #unfix				ctg
 
 #dump commands
-dump				dmp all custom ${1000fps} post/dump*.pruebas id type type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius
+dump				dmp all custom ${1000fps} post/dump*.pruebas id type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius
 dump 				dmpstl all mesh/stl ${1000fps} post/dump*.stl
 
 #run
