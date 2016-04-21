@@ -206,7 +206,7 @@ run 1
 #unfix				ctg
 
 #dump commands
-dump				dmp all custom ${1000fps} post/dump*.pruebas id type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius
+dump				dmp all custom ${1000fps} post/dump*.pruebas id type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius mass
 fix 				dumpText all print 10 "${ForceX} ${ForceY} ${ForceZ}" screen no title "Fx[N] Fy[N] Fz[N]" file fuerzasPrensa1.txt
 dump 				dmpstl all mesh/stl ${1000fps} post/dump*.stl
 
