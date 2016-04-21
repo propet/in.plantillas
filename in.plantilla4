@@ -4,18 +4,8 @@
 
 ################################################
 
-variable  			n_sizes equal VAR_n_sizes
-variable  			n_templates equal 2*${n_sizes}
-
-variable 			R_min equal VAR_R_min
-variable 			R_max equal VAR_R_max
-
-variable 			percen_MgO equal VAR_percen_MgO
-variable 			prop_MgO equal ${percen_MgO}/100
-variable 			prop_Al2O3 equal 1-${prop_MgO}
-
-variable 			prop_MgO_size equal ${prop_MgO}/${n_sizes}
-variable 			prop_Al2O3_size equal ${prop_Al2O3}/${n_sizes}
+variable 			R_min equal 375
+variable 			R_max equal 3000
 
 ################################################
 
@@ -73,7 +63,7 @@ variable 			shear_modulus equal ${E_Al2O3}/(2*(1+${nu_Al2O3}))
 variable 			rayleigh_time equal 3.141592*${R_min}*(sqrt(${rho_Al2O3}/${shear_modulus})/(0.1631*${nu_Al2O3}+0.8766))
 
 # TimeStep
-variable 			timestep equal 0.38*${rayleigh_time}
+variable 			timestep equal 0.3*${rayleigh_time}
 
 # Altura prensa rapida [mm]
 variable 			h_prensaRapida equal 13

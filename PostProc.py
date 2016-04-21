@@ -18,11 +18,16 @@ z   = A[:,4]   # posicion z
 r   = A[:,17]  # radio
 m   = A[:,18]  # masa
 
-z_max = max(z)
-x_min = min(x)
-x_max = max(x)
-y_max = max(y)
-y_min = min(y)
+zmax_index = np.where(z==max(z))
+xmin_index = np.where(x==min(x))
+xmax_index = np.where(x==max(x))
+ymin_index = np.where(y==min(y))
+ymax_index = np.where(y==max(y))
+z_max = max(z)+r[zmax_index]
+x_min = min(x)-r[xmin_index]
+x_max = max(x)+r[xmax_index]
+y_max = max(y)+r[ymin_index]
+y_min = min(y)-r[ymax_index]
 Diam_disco = (x_max+y_max)/2 - (x_min+y_min)/2
 
 # Masa total

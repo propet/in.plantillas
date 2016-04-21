@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mpirun -np * liggghts < in1.MgO_proporcion_Rmin_radioMinimo_Rmax_radioMaximo
-mpirun -np * liggghts < in2.MgO_proporcion_Rmin_radioMinimo_Rmax_radioMaximo
-mpirun -np * liggghts < in3.MgO_proporcion_Rmin_radioMinimo_Rmax_radioMaximo
-mpirun -np * liggghts < in4.MgO_proporcion_Rmin_radioMinimo_Rmax_radioMaximo
+mpirun -np 4 liggghts < in.plantilla1
+mpirun -np 4 liggghts < in.plantilla2
+mpirun -np 4 liggghts < in.plantilla3
+mpirun -np 4 liggghts < in.plantilla4
