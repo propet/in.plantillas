@@ -24,13 +24,8 @@ variable 			log_name string log1.liggghts
 
 # Variables, paso de si a micro	
 
-# Dimensiones dominio
-variable 			dom_radio equal 0.0155e6
-variable 			zlo equal -0.001e6
-variable 			zhi equal 0.018e6
-
 # Cylinder wall dimensions
-variable 			cylin_radio equal 0.015e6
+variable 			cylin_radio equal 0.011e6
 
 # Youngs Modulus, para la conversion: multiplicar GPa por 10^-3
 variable 			E_MgO equal 2.5e5 # antes e5 
@@ -50,13 +45,19 @@ variable 			nu_MgO equal 0.25
 variable 			skin equal 2*${R_min}
 
 # Dimensiones plato
-variable 			radio equal 0.015e6
+variable 			radio equal 0.011e6
 variable 			h_plato equal 0.008e6
 
 # Dimensiones fabrica de particulas
 variable 			z_lo2 equal ${R_max}
 variable 			z_hi2 equal ${z_lo2}+(${radio}^2*${h_plato})/((${radio}-${R_max})^2)
+variable 			z_prensa equal ceil(${z_hi2}/1000)
 variable 			R_in equal ${radio}-${R_max} 
+
+# Dimensiones dominio
+variable 			dom_radio equal 0.0155e6
+variable 			zlo equal -0.001e6
+variable 			zhi equal ${z_hi2}+0.004e6
 
 # Plato
 variable 			scale equal 1e3
@@ -160,7 +161,7 @@ fix 				ins2 all insert/pack seed 1001 distributiontemplate pdd2 insert_every on
 
 # Import mesh from cad:
 fix 				cad1 all mesh/surface file meshes/plato_8mm_22mm.stl type 1 scale ${scale}
-fix 				prensa all mesh/surface/stress file meshes/prensa_22mm_14.stl type 1 scale ${scale} stress on
+fix 				prensa all mesh/surface/stress file meshes/prensa_22mm_${z_prensa}.stl type 1 scale ${scale} stress on
 fix 				move all move/mesh mesh prensa linear 0. 0. ${velRapida}
 
 # Fuerzas sobre la cara de la prensa
