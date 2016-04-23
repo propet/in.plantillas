@@ -140,7 +140,7 @@ fix 				m6 all property/global cohesionEnergyDensity peratomtypepair 2 ${CED_MgO
 # Import mesh from cad:
 fix 				cad1 all mesh/surface file meshes/plato_8mm_22mm.stl type 1 scale ${scale}
 fix 				prensa all mesh/surface/stress file meshes/prensa_22mm_${z_prensa}.stl type 1 scale ${scale} stress on
-fix 				move all move/mesh mesh prensa linear 0. 0. 0.05
+fix 				move all move/mesh mesh prensa linear 0. 0. ${velSubida}
 
 
 # Use the imported mesh as granular wall
