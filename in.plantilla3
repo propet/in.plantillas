@@ -71,6 +71,13 @@ variable 			timestep equal 0.3*${rayleigh_time}
 # Altura prensa rapida [mm]
 variable 			h_prensaRapida equal 13
 
+# Velocidad prensa lenta
+variable 			velSubida equal -0.08
+# Recorrido prensa lenta [mm]
+variable 			desp_prensaLenta equal 2.5
+# Tiempo en segundos de desplazamiento
+variable 			t_prensaLenta equal ${desp_prensaLenta}*10^-3/abs(${velSubida})
+
 # El numero de timestep equivalentes a un segundo
 variable 			s_enTimeSteps equal 1e6/${timestep}
 
@@ -81,9 +88,9 @@ variable 			1000fps equal ceil(${s_enTimeSteps}/1000)
 
 ###########################################################
 # Cuantos segundos dura la simulacion?
-variable 			runTime equal ceil(0.05*${s_enTimeSteps})
+variable 			run1 equal ceil(${t_prensaLenta}*${s_enTimeSteps})
 # Procentaje en volumen de insercion en factory2
-variable 			per equal 0.6
+variable 			per equal 0.8
 ###########################################################
 
 
@@ -158,4 +165,4 @@ dump 				dmpstl all mesh/stl ${1000fps} post/dump*.stl
 
 #run
 
-run 				${runTime}
+run 				${run1} upto

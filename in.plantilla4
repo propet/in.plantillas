@@ -67,6 +67,7 @@ variable 			rayleigh_time equal 3.141592*${R_min}*(sqrt(${rho_Al2O3}/${shear_mod
 
 # TimeStep
 variable 			timestep equal 0.3*${rayleigh_time}
+print ${timestep}
 
 # Altura prensa rapida [mm]
 variable 			h_prensaRapida equal 13

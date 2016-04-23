@@ -65,7 +65,7 @@ variable 			zhi equal 0.025e6
 variable 			scale equal 1e3
 
 # Fuerza tope para la prensa rapida [N]
-variable 			target_force equal 1000000
+variable 			target_force equal 10000  # 10 kN
 
 # Gravedad
 variable 			gravity equal 9.81e-6
@@ -100,7 +100,7 @@ variable 			1000fps equal ceil(${s_enTimeSteps}/1000)
 # Cuantos segundos dura la simulacion?
 variable 			runUpTo1 equal ceil(10*${s_enTimeSteps})
 # Procentaje en volumen de insercion en factory2
-variable 			per equal 0.75
+variable 			per equal 0.7
 ###########################################################
 
 
@@ -200,7 +200,7 @@ thermo_modify 		norm no lost ignore  # ignora los atomos perdidos
 
 # Documento restart; siempre el mismo archivo, sobreescribiendose
 #restart 			${1000fps} poly.restart poly.restart
-restart 			100 poly.restart poly.restart
+restart 			${1000fps} poly.restart poly.restart
 
 # Check time step and initialize dump file
 fix 				ctg all check/timestep/gran 1000 0.2 0.2  # antes en vez de 1000 habia un 1 (de solo comprobar una vez)
