@@ -48,12 +48,16 @@ variable 			nu_MgO equal 0.25
 # Neighbor extra distance beyond force cutoff
 variable 			skin equal 2*${R_min}
 
+# Dimensiones plato
+variable 			radio equal 0.011e6
+variable 			h_plato equal 0.008e6
+
 # Dimensiones fabrica de particulas
-variable 			radio equal 0.015e6
-#fabrica2
 variable 			z_lo2 equal ${R_max}
-variable 			z_hi2 equal 0.012e6-${R_max}
+variable 			z_hi2 equal ${z_lo2}+(${radio}^2*${h_plato})/((${radio}-${R_max})^2)
+variable 			z_prensa equal ceil((${z_hi2}+${R_max})/1000)
 variable 			R_in equal ${radio}-${R_max} 
+
 
 # Plato
 variable 			scale equal 1e3
@@ -73,7 +77,7 @@ variable 			shear_modulus equal ${E_Al2O3}/(2*(1+${nu_Al2O3}))
 variable 			rayleigh_time equal 3.141592*${R_min}*(sqrt(${rho_Al2O3}/${shear_modulus})/(0.1631*${nu_Al2O3}+0.8766))
 
 # TimeStep
-variable 			timestep equal 0.5*${rayleigh_time}
+variable 			timestep equal 0.3*${rayleigh_time}
 
 # Altura prensa rapida [mm]
 variable 			h_prensaRapida equal 13
@@ -135,7 +139,7 @@ fix 				m6 all property/global cohesionEnergyDensity peratomtypepair 2 ${CED_MgO
 
 # Import mesh from cad:
 fix 				cad1 all mesh/surface file meshes/plato_8mm_22mm.stl type 1 scale ${scale}
-fix 				prensa all mesh/surface/stress file meshes/prensa_22mm_14.stl type 1 scale ${scale} stress on
+fix 				prensa all mesh/surface/stress file meshes/prensa_22mm_${z_prensa}.stl type 1 scale ${scale} stress on
 fix 				move all move/mesh mesh prensa linear 0. 0. 0.05
 
 
