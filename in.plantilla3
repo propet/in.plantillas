@@ -37,6 +37,12 @@ variable 			nu_MgO equal 0.35
 # Neighbor extra distance beyond force cutoff
 variable 			skin equal 2*${R_min}
 
+# Dimensiones fabrica de particulas
+variable 			z_lo2 equal ${R_max}
+variable 			z_hi2 equal ${z_lo2}+(${radio}^2*${h_plato})/((${radio}-${R_max})^2)
+variable 			z_prensa equal ceil(${z_hi2}/1000)
+variable 			R_in equal ${radio}-${R_max} 
+
 # Plato
 variable 			scale equal 1e3
 
@@ -109,7 +115,7 @@ fix 				m6 all property/global cohesionEnergyDensity peratomtypepair 2 ${CED_MgO
 
 # Import mesh from cad:
 fix 				cad1 all mesh/surface file meshes/plato_8mm_22mm.stl type 1 scale ${scale}
-fix 				prensa all mesh/surface/stress file meshes/prensa_22mm_14.stl type 1 scale ${scale} stress on
+fix 				prensa all mesh/surface/stress file meshes/prensa_22mm_${z_prensa}.stl type 1 scale ${scale} stress on
 fix 				move all move/mesh mesh prensa linear 0. 0. 0.05
 
 
