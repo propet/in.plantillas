@@ -4,8 +4,8 @@
 
 ################################################
 
-variable 			R_min equal 375
-variable 			R_max equal 3000
+variable 			R_min equal 205/2
+variable 			R_max equal 3000/2
 
 ################################################
 
