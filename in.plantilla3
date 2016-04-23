@@ -72,9 +72,9 @@ variable 			timestep equal 0.3*${rayleigh_time}
 variable 			h_prensaRapida equal 13
 
 # Velocidad prensa lenta
-variable 			velSubida equal -0.08
+variable 			velSubida equal 0.08
 # Recorrido prensa lenta [mm]
-variable 			desp_prensaLenta equal 2.5
+variable 			desp_prensaLenta equal 6
 # Tiempo en segundos de desplazamiento
 variable 			t_prensaLenta equal ${desp_prensaLenta}*10^-3/abs(${velSubida})
 
