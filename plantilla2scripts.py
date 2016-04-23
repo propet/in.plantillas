@@ -85,10 +85,12 @@ for percen_MgO in range(50,100+prop_step,prop_step):
 			  -e 's/VAR_sigma/%.0f/g' -e 's/VAR_R_min/%.0f/g' -e 's/VAR_R_max/%.0f/g' \
 			  in.plantilla1 > scripts/%s/in1.MgO_%.1f_mu%.0f_sigma%.0f" % (len(R)	, percen_MgO, mu, sigma,
 			  R_min, R_max, 'input_MgO-%.1f/mu%.0f_sigma%.0f' % (percen_MgO, mu, sigma), percen_MgO, mu, sigma))
-			os.system("sed -e 's/VAR_R_min/%.0f/g' in.plantilla2 > scripts/%s/in2.MgO_%.1f_mu%.0f_sigma%.0f" % 
-			  (R_min, 'input_MgO-%.1f/mu%.0f_sigma%.0f' % (percen_MgO, mu, sigma), percen_MgO, mu, sigma))
-			os.system("sed -e 's/VAR_R_min/%.0f/g' in.plantilla3 > scripts/%s/in3.MgO_%.1f_mu%.0f_sigma%.0f" % 
-			  (R_min, 'input_MgO-%.1f/mu%.0f_sigma%.0f' % (percen_MgO, mu, sigma), percen_MgO, mu, sigma))
+			os.system("sed -e 's/VAR_R_min/%.0f/g' -e 's/VAR_R_max/%.0f/g' in.plantilla2 > \
+			  scripts/%s/in2.MgO_%.1f_mu%.0f_sigma%.0f" % (R_min, R_max, 'input_MgO-%.1f/mu%.0f_sigma%.0f' % 
+			  (percen_MgO, mu, sigma), percen_MgO, mu, sigma))
+			os.system("sed -e 's/VAR_R_min/%.0f/g' -e 's/VAR_R_max/%.0f/g' in.plantilla3 > \
+			  scripts/%s/in3.MgO_%.1f_mu%.0f_sigma%.0f" % (R_min, R_max, 'input_MgO-%.1f/mu%.0f_sigma%.0f' % 
+			  (percen_MgO, mu, sigma), percen_MgO, mu, sigma))
 			os.system("sed -e 's/VAR_R_min/%.0f/g' in.plantilla4 > scripts/%s/in4.MgO_%.1f_mu%.0f_sigma%.0f" % 
 			  (R_min, 'input_MgO-%.1f/mu%.0f_sigma%.0f' % (percen_MgO, mu, sigma), percen_MgO, mu, sigma))
 
