@@ -165,7 +165,7 @@ thermo 				1000
 thermo_modify 		norm no lost ignore  # ignora los atomos perdidos
 
 # Documento restart; siempre el mismo archivo, sobreescribiendose
-restart 			${100fps} poly.restart poly.restart
+restart 			${1000fps} poly.restart poly.restart
 
 # Check time step and initialize dump file
 fix 				ctg all check/timestep/gran 1000 0.2 0.2  # antes en vez de 1000 habia un 1 (de solo comprobar una vez)
@@ -173,9 +173,9 @@ run 1
 #unfix				ctg
 
 #dump commands
-dump				dmp all custom ${30fps} post/dump*.pruebas id type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius mass
+dump				dmp all custom ${1000fps} post/dump*.pruebas id type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius mass
 fix 				dumpText all print 200 "${ForceX} ${ForceY} ${ForceZ}" screen no title "Fx[N] Fy[N] Fz[N]" file fuerzasPrensa2.txt
-dump 				dmpstl all mesh/stl ${30fps} post/dump*.stl
+dump 				dmpstl all mesh/stl ${1000fps} post/dump*.stl
 
 #run
 
