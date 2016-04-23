@@ -69,9 +69,10 @@ variable 			h_prensaRapida equal 13
 
 
 # Velocidad prensa lenta
-variable 			velLenta equal -1.666666666e-5
+#variable 			velLenta equal -1.666666666e-5
+variable 			velLenta equal -0.05
 # Recorrido prensa lenta [mm]
-variable 			desp_prensaLenta equal 0.3
+variable 			desp_prensaLenta equal 1
 # Tiempo en segundos de desplazamiento
 variable 			t_prensaLenta equal ${desp_prensaLenta}*10^-3/abs(${velLenta})
 
@@ -87,7 +88,7 @@ variable 			30fps equal ceil(${s_enTimeSteps}/30)
 
 ###########################################################
 # Cuantos segundos dura la simulacion?
-variable 			runUpTo1 equal ceil(${t_prensaLenta}*${s_enTimeSteps})
+variable 			run1 equal ceil(${t_prensaLenta}*${s_enTimeSteps})
 # Procentaje en volumen de insercion en factory2
 variable 			per equal 0.8
 ###########################################################
@@ -158,7 +159,7 @@ thermo 				1000
 thermo_modify 		norm no lost ignore  # ignora los atomos perdidos
 
 # Documento restart; siempre el mismo archivo, sobreescribiendose
-restart 			${100fps} poly.restart poly.restart
+restart 			${1000fps} poly.restart poly.restart
 
 # Check time step and initialize dump file
 fix 				ctg all check/timestep/gran 1000 0.2 0.2  # antes en vez de 1000 habia un 1 (de solo comprobar una vez)
@@ -166,10 +167,10 @@ run 1
 #unfix				ctg
 
 #dump commands
-dump				dmp all custom ${30fps} post/dump*.pruebas id type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius mass
+dump				dmp all custom ${1000fps} post/dump*.pruebas id type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius mass
 fix 				dumpText all print 200 "${ForceX} ${ForceY} ${ForceZ}" screen no title "Fx[N] Fy[N] Fz[N]" file fuerzasPrensa2.txt
-dump 				dmpstl all mesh/stl ${30fps} post/dump*.stl
+dump 				dmpstl all mesh/stl ${1000fps} post/dump*.stl
 
 #run
 
-run 				${runUpTo1} upto
+run 				${run1}
