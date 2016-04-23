@@ -76,9 +76,10 @@ variable 			h_prensaRapida equal 13
 
 
 # Velocidad prensa lenta
-variable 			velLenta equal -1.666666666e-5
+#variable 			velLenta equal -1.666666666e-5
+variable 			velLenta equal -0.05
 # Recorrido prensa lenta [mm]
-variable 			desp_prensaLenta equal 0.3
+variable 			desp_prensaLenta equal 1
 # Tiempo en segundos de desplazamiento
 variable 			t_prensaLenta equal ${desp_prensaLenta}*10^-3/abs(${velLenta})
 
@@ -94,7 +95,7 @@ variable 			30fps equal ceil(${s_enTimeSteps}/30)
 
 ###########################################################
 # Cuantos segundos dura la simulacion?
-variable 			runUpTo1 equal ceil(${t_prensaLenta}*${s_enTimeSteps})
+variable 			run1 equal ceil(${t_prensaLenta}*${s_enTimeSteps})
 # Procentaje en volumen de insercion en factory2
 variable 			per equal 0.8
 ###########################################################
@@ -179,4 +180,4 @@ dump 				dmpstl all mesh/stl ${1000fps} post/dump*.stl
 
 #run
 
-run 				${runUpTo1} upto
+run 				${run1}
