@@ -51,13 +51,14 @@ variable 			h_plato equal 0.008e6
 # Dimensiones fabrica de particulas
 variable 			z_lo2 equal ${R_max}
 variable 			z_hi2 equal ${z_lo2}+(${radio}^2*${h_plato})/((${radio}-${R_max})^2)
-variable 			z_prensa equal ceil(${z_hi2}/1000)
+variable 			z_prensa equal ceil((${z_hi2}+${R_max})/1000)
 variable 			R_in equal ${radio}-${R_max} 
 
 # Dimensiones dominio
 variable 			dom_radio equal 0.0155e6
 variable 			zlo equal -0.001e6
-variable 			zhi equal ${z_hi2}+0.004e6
+#variable 			zhi equal ${z_prensa}+0.005e6
+variable 			zhi equal 0.025e6
 
 # Plato
 variable 			scale equal 1e3

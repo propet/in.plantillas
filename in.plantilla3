@@ -45,7 +45,7 @@ variable 			h_plato equal 0.008e6
 #fabrica2
 variable 			z_lo2 equal ${R_max}
 variable 			z_hi2 equal ${z_lo2}+(${radio}^2*${h_plato})/((${radio}-${R_max})^2)
-variable 			z_prensa equal ceil(${z_hi2}/1000)
+variable 			z_prensa equal ceil((${z_hi2}+${R_max})/1000)
 variable 			R_in equal ${radio}-${R_max} 
 
 # Plato
