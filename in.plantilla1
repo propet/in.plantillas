@@ -205,8 +205,8 @@ thermo 				1000
 thermo_modify 		norm no lost ignore  # ignora los atomos perdidos
 
 # Documento restart; siempre el mismo archivo, sobreescribiendose
-#restart 			${1000fps} poly.restart poly.restart
-restart 			100 poly.restart poly.restart
+restart 			${1000fps} poly.restart poly.restart
+#restart 			100 poly.restart poly.restart
 
 # Check time step and initialize dump file
 fix 				ctg all check/timestep/gran 1000 0.2 0.2  # antes en vez de 1000 habia un 1 (de solo comprobar una vez)
