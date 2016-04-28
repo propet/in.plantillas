@@ -113,5 +113,5 @@ for percen_MgO in range(50,100+prop_step,prop_step):
 			# Genera archivos para la ejecucion de la simulacion completa
 			#os.system("sudo cp ./ejecuta ./scripts/input_MgO-%.1f/Rmin_%.0f_Rmax_%.0f/" % (percen_MgO, Rmin, Rmax))
 			os.system("sed -e 's/proporcion/%.1f/g' -e 's/radioMinimo/%.0f/g' -e 's/radioMaximo/%.0f/g' \
-			  ./ejecuta > scripts/%s/ejecuta" % (percen_MgO, Rmin, Rmax,
+			  ./ejecuta.py > scripts/%s/ejecuta.py" % (percen_MgO, Rmin, Rmax,
 			  'input_MgO-%.1f/Rmin_%.0f_Rmax_%.0f' % (percen_MgO, Rmin, Rmax)))
