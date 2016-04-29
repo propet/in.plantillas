@@ -72,7 +72,7 @@ variable 			zhi equal ${z_prensa}+0.04e6
 variable 			scale equal 1e3
 
 # Fuerza tope para la prensa rapida [N]
-variable 			target_force equal 1000000
+variable 			target_force equal 10000 # 10 kN
 
 # Gravedad
 variable 			gravity equal 9.81e-6
