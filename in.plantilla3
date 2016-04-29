@@ -22,8 +22,11 @@ variable 			zlo equal -0.001e6
 variable 			zhi equal 0.015e6
 
 # Youngs Modulus [250GPa], para la conversion de si a micro multiplicar por 10^-3
-variable 			E_MgO equal 2.5e8 
-variable 			E_Al2O3 equal 2.5e8
+#variable 			E_MgO equal 2.5e8 
+#variable 			E_Al2O3 equal 2.5e8
+# Youngs Modulus [250MPa], para la conversion de si a micro multiplicar por 10^-3
+#variable 			E_MgO equal 2.5e5 
+#variable 			E_Al2O3 equal 2.5e5
 
 # Cohesion Energy Density 
 variable 			CED_MgO equal 3000000e-3
