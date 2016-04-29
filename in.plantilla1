@@ -41,9 +41,9 @@ variable 			zhi equal 0.018e6
 # Cylinder wall dimensions
 variable 			cylin_radio equal 0.011e6
 
-# Youngs Modulus, para la conversion: multiplicar GPa por 10^-3
-variable 			E_MgO equal 2.5e5 # antes e5 
-variable 			E_Al2O3 equal 2.5e5 # antes e5
+# Youngs Modulus [250GPa], para la conversion de si a micro multiplicar por 10^-3
+variable 			E_MgO equal 2.5e8 
+variable 			E_Al2O3 equal 2.5e8
 
 # Cohesion Energy Density 
 variable 			CED_MgO equal 3000000e-3
