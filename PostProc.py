@@ -47,4 +47,4 @@ rho = (Mt/Vd)*1000  # Multiplicado por 1000 para pasar de [pico_g/nu_m^3] a SI
 # k = 
 
 #print('Porosidad: ', e[0], 'Densidad: ', rho[0])
-print r_min, r_max, Diam_disco, e[0], rho[0]
+print x.size, r_min, r_max, Diam_disco[0], z_max[0], e[0], rho[0]

@@ -10,13 +10,6 @@ variable  			n_templates equal 2*${n_sizes}
 variable 			R_min equal VAR_R_min
 variable 			R_max equal VAR_R_max
 
-
-###################################################################################################
-variable r0 equal ${R_min}
------
-
-###################################################################################################
-
 variable 			percen_MgO equal VAR_percen_MgO
 variable 			prop_MgO equal ${percen_MgO}/100
 variable 			prop_Al2O3 equal 1-${prop_MgO}
@@ -29,7 +22,7 @@ variable 			prop_Al2O3_size equal ${prop_Al2O3}/${n_sizes}
 ### Initialization
 
 # log name
-variable 			log_name string log1.liggghts
+variable 			log_name string log2.liggghts
 
 # Variables, paso de si a micro	
 
@@ -39,7 +32,7 @@ variable 			zlo equal -0.001e6
 variable 			zhi equal 0.018e6
 
 # Cylinder wall dimensions
-variable 			cylin_radio equal 0.011e6
+variable 			cylin_radio equal 0.015e6
 
 # Youngs Modulus [250MPa], para la conversion de si a micro multiplicar por 10^-3
 variable 			E_MgO equal 2.5e5 
@@ -71,8 +64,11 @@ variable 			R_in equal ${radio}-${R_max}
 # Plato
 variable 			scale equal 1e3
 
-# Fuerza tope para la prensa rapida [N]
-variable 			target_force equal 10000 # 10 kN
+# Center of Mass
+variable 			com equal 0.03e6
+
+# Fuerza tope para la prensa lenta [N]
+variable 			target_force equal FUERZA
 
 # Gravedad
 variable 			gravity equal 9.81e-6
@@ -86,13 +82,17 @@ variable 			rayleigh_time equal 3.141592*${R_min}*(sqrt(${rho_Al2O3}/${shear_mod
 # TimeStep
 variable 			timestep equal 0.3*${rayleigh_time}
 
-
-# Velocidad prensa rapida
-variable 			velRapida equal -0.3
 # Altura prensa rapida [mm]
 variable 			h_prensaRapida equal 13
-# Tiempo en microsegundos hasta llegar a 8mm de altura
-variable 			t_prensaRapida equal ((${h_prensaRapida}*10^3)-${h_plato})/abs(${velRapida})
+
+
+# Velocidad prensa lenta
+#variable 			velLenta equal -1.666666666e-5
+variable 			velLenta equal -0.05
+# Recorrido prensa lenta [mm]
+variable 			desp_prensaLenta equal 1
+# Tiempo en segundos de desplazamiento
+variable 			t_prensaLenta equal ${desp_prensaLenta}*10^-3/abs(${velLenta})
 
 
 # El numero de timestep equivalentes a un segundo
@@ -101,6 +101,7 @@ variable 			s_enTimeSteps equal 1e6/${timestep}
 # Dump every ...
 variable 			100fps equal ceil(${s_enTimeSteps}/100)
 variable 			1000fps equal ceil(${s_enTimeSteps}/1000)
+variable 			30fps equal ceil(${s_enTimeSteps}/30)
 
 
 ###########################################################
@@ -109,7 +110,6 @@ variable 			runUpTo1 equal ceil(10*${s_enTimeSteps})
 # Procentaje en volumen de insercion en factory2
 variable 			per equal 0.75
 ###########################################################
-
 
 
 # Preliminaries
@@ -123,7 +123,7 @@ processors			* * 1   # Un solo nivel, los procesadores se reparten el domino en 
 
 # Declare domain
 region				domain cylinder z 0 0 ${dom_radio} ${zlo} ${zhi} units box
-create_box 			2 domain
+read_restart 		poly.restart
 
 # log name
 log 				${log_name} append
@@ -141,40 +141,11 @@ fix 				m3 all property/global coefficientRestitution peratomtypepair 2 0.5 0.5 
 fix 				m4 all property/global coefficientFriction peratomtypepair 2 0.2 0.175 0.175 0.5
 fix 				m6 all property/global cohesionEnergyDensity peratomtypepair 2 ${CED_MgO} ${CED_Al2O3} ${CED_Al2O3} ${CED_MgO}
 
-# Particle insertion
-
-#aqui el ramdom seed generator no tiene significado porque los parametros de las particulas son ctes.
-fix 				MgO all particletemplate/sphere 911 atom_type 1 density constant ${rho_MgO} radius constant ${R_max}
-fix 				Al2O3 all particletemplate/sphere 1092 atom_type 2 density constant ${rho_Al2O3} radius constant ${R_min}
-fix 				pdd1 all particledistribution/discrete 5430 2 MgO ${prop_MgO} Al2O3 ${prop_Al2O3}
-
-
-
-###################################################################################################
-##########################
-# Uniform mass insertion #
-##########################
-
-fix pts0 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${r0}
-fix pts1 all particletemplate/sphere 1 atom_type 2 density constant ${rho_Al2O3} radius constant ${r0}
-~~~~~
-
-
-*****
-
-
-###################################################################################################
-
-# Fabricas de particulas
-region 				factory2 cylinder z 0 0 ${R_in} ${z_lo2} ${z_hi2} units box
-
-fix 				ins2 all insert/pack seed 1001 distributiontemplate pdd2 insert_every once overlapcheck yes maxattempt 1000 volumefraction_region ${per} region factory2 ntry_mc 1000000 
-
 
 # Import mesh from cad:
 fix 				cad1 all mesh/surface file meshes/plato_8mm_22mm.stl type 1 scale ${scale}
 fix 				prensa all mesh/surface/stress file meshes/prensa_22mm_${z_prensa}.stl type 1 scale ${scale} stress on
-fix 				move all move/mesh mesh prensa linear 0. 0. ${velRapida}
+fix 				move all move/mesh mesh prensa linear 0. 0. ${velLenta}
 
 # Fuerzas sobre la cara de la prensa
 # Paso de fuerza en unidades micro a si -> 1*10^-6
@@ -207,7 +178,6 @@ thermo_modify 		norm no lost ignore  # ignora los atomos perdidos
 
 # Documento restart; siempre el mismo archivo, sobreescribiendose
 restart 			${1000fps} poly.restart poly.restart
-#restart 			100 poly.restart poly.restart
 
 # Check time step and initialize dump file
 fix 				ctg all check/timestep/gran 1000 0.2 0.2  # antes en vez de 1000 habia un 1 (de solo comprobar una vez)
@@ -216,7 +186,7 @@ run 1
 
 #dump commands
 dump				dmp all custom ${1000fps} post/dump*.pruebas id type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius mass
-fix 				dumpText all print 10 "${ForceX} ${ForceY} ${ForceZ}" screen no title "Fx[N] Fy[N] Fz[N]" file fuerzasPrensa1.txt
+fix 				dumpText all print 200 "${ForceX} ${ForceY} ${ForceZ}" screen no title "Fx[N] Fy[N] Fz[N]" file fuerzasPrensa2.txt
 dump 				dmpstl all mesh/stl ${1000fps} post/dump*.stl
 
 #run
