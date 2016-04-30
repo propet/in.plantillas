@@ -5,6 +5,9 @@ import numpy as np
 
 # Poder manipular la carpeta sin que me vuelvan a pedir permiso
 os.system('sudo chmod -R 777 ./scripts')
+os.system('sudo mkdir dumps')
+os.system('sudo mkdir scripts')
+os.system('sudo mkdir post')	
 
 MgO = '75.0'
 directorioProporcion = './scripts/input_MgO-' + MgO
