@@ -8,7 +8,7 @@ import numpy as np
 '''
 
 # Importacion de los ultimos datos con informacion de las particulas
-newest = max(glob.iglob('./post/dump*.pruebas'), key=os.path.getctime)
+newest = max(glob.iglob('./dump*'), key=os.path.getctime)
 A      = np.loadtxt(newest, skiprows=9)
 
 # Las variables estan en micras, pero la masa esta en picogramos
@@ -18,6 +18,8 @@ z   = A[:,4]   # posicion z
 r   = A[:,17]  # radio
 m   = A[:,18]  # masa
 
+r_min = min(r)
+r_max = max(r)
 zmax_index = np.where(z==max(z))
 xmin_index = np.where(x==min(x))
 xmax_index = np.where(x==max(x))
@@ -28,7 +30,7 @@ x_min = min(x)-r[xmin_index]
 x_max = max(x)+r[xmax_index]
 y_max = max(y)+r[ymin_index]
 y_min = min(y)-r[ymax_index]
-Diam_disco = (x_max+y_max)/2 - (x_min+y_min)/2
+Diam_disco = (x_max+y_max)/2 - (x_min+y_min)/2	
 
 # Masa total
 Mt = m.sum()
@@ -44,4 +46,5 @@ rho = (Mt/Vd)*1000  # Multiplicado por 1000 para pasar de [pico_g/nu_m^3] a SI
 # Permeabilidad
 # k = 
 
-print('Porosidad: ', e, 'Densidad: ', rho)
+#print('Porosidad: ', e[0], 'Densidad: ', rho[0])
+print r_min, r_max, Diam_disco, e[0], rho[0]
