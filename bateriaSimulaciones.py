@@ -15,11 +15,11 @@ os.system('sudo mkdir scripts')
 os.system('sudo mkdir post')	
 os.system('sudo chmod -R 777 ./*')
 
-MgO = ['70.0', '80.0', '90.0']
+MgO = ['60.0', '75.0', '90.0']
 for proporcion in MgO:
 
 	directorioProporcion = './scripts/input_MgO-' + proporcion
-	fuerzas = [1000, 100000, 10000000] # Newtons -> 1kN, 100kN, 10T
+	fuerzas = [1000, 100000, 10000000, 100000000] # Newtons -> 1kN, 100kN, 10T, 100T
 
 	for fuerza in fuerzas:
 		os.system("sed -e 's/FUERZA/%d/g' in.plantilla2.0 > in.plantilla2" % (fuerza))
@@ -29,7 +29,7 @@ for proporcion in MgO:
 		directorioMgO.sort()
 
 		for caso in directorioMgO:
-			if(caso.endswith('1300') and not(caso.startswith('Rmin_100'))):
+			if(caso.endswith('1100')):
 				os.chdir(directorioProporcion + '/' + caso)
 				os.system('python ejecuta.py')
 				# archivos dump para posible renderizado posterior

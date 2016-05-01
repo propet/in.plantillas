@@ -13,7 +13,7 @@ import os
 #############
 
 # Radios minimo y maximo considerados
-Rmin_lab = 100 		# micras
+Rmin_lab = 50 		# micras
 Rmax_lab = 1500 	# micras
 # Steps
 prop_step = 5       # Paso porcentual en la proporcion de MgO en la mezcla
