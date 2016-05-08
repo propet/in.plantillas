@@ -75,7 +75,7 @@ variable 			zhi equal ${z_prensa}+0.04e6
 variable 			scale equal 1e3
 
 # Fuerza tope para la prensa rapida [N]
-variable 			target_force equal 10000 # 10 kN
+variable 			target_force equal 100 # 100 N
 
 # Gravedad
 variable 			gravity equal 9.81e-6
@@ -171,10 +171,10 @@ fix 				prensa all mesh/surface/stress file meshes/prensa_22mm_${z_prensa}.stl t
 fix 				move all move/mesh mesh prensa linear 0. 0. ${velRapida}
 
 # Fuerzas sobre la cara de la prensa
-# Paso de fuerza en unidades micro a si -> 1*10^-6
-variable 			ForceX equal ceil(f_prensa[1]*1e-6)
-variable 			ForceY equal ceil(f_prensa[2]*1e-6)
-variable 			ForceZ equal ceil(f_prensa[3]*1e-6)
+# Paso de fuerza en unidades micro a si -> 1*10^-9
+variable 			ForceX equal ceil(f_prensa[1]*1e-9)
+variable 			ForceY equal ceil(f_prensa[2]*1e-9)
+variable 			ForceZ equal ceil(f_prensa[3]*1e-9)
 
 
 # Use the imported mesh as granular wall
