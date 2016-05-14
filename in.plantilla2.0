@@ -34,6 +34,9 @@ variable 			zhi equal 0.018e6
 # Cylinder wall dimensions
 variable 			cylin_radio equal 0.015e6
 
+# Youngs Modulus [250GPa], para la conversion de si a micro multiplicar por 10^-3
+#variable 			E_MgO equal 2.5e8 
+#variable 			E_Al2O3 equal 2.5e8
 # Youngs Modulus [250MPa], para la conversion de si a micro multiplicar por 10^-3
 variable 			E_MgO equal 2.5e5 
 variable 			E_Al2O3 equal 2.5e5
@@ -148,10 +151,10 @@ fix 				prensa all mesh/surface/stress file meshes/prensa_22mm_${z_prensa}.stl t
 fix 				move all move/mesh mesh prensa linear 0. 0. ${velLenta}
 
 # Fuerzas sobre la cara de la prensa
-# Paso de fuerza en unidades micro a si -> 1*10^-6
-variable 			ForceX equal ceil(f_prensa[1]*1e-6)
-variable 			ForceY equal ceil(f_prensa[2]*1e-6)
-variable 			ForceZ equal ceil(f_prensa[3]*1e-6)
+# Paso de fuerza en unidades micro a si -> 1*10^-9
+variable 			ForceX equal ceil(f_prensa[1]*1e-9)
+variable 			ForceY equal ceil(f_prensa[2]*1e-9)
+variable 			ForceZ equal ceil(f_prensa[3]*1e-9)
 
 
 # Use the imported mesh as granular wall

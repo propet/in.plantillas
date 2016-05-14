@@ -19,7 +19,7 @@ MgO = ['60.0', '75.0', '90.0']
 for proporcion in MgO:
 
 	directorioProporcion = './scripts/input_MgO-' + proporcion
-	fuerzas = [1000, 100000, 10000000, 100000000] # Newtons -> 1kN, 100kN, 10T, 100T
+	fuerzas = [1000, 100000, 10000000] # Newtons -> 1kN, 100kN, 10T
 
 	for fuerza in fuerzas:
 		os.system("sed -e 's/FUERZA/%d/g' in.plantilla2.0 > in.plantilla2" % (fuerza))
