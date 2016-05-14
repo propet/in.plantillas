@@ -1,6 +1,14 @@
-###############
-# Micro Units #
-###############
+##############################
+###############              #
+# Micro Units #              #
+###############              #
+#				             #
+# Length      -> micron      #
+# Mass   	  -> picogram    #
+# Time 	 	  -> microsecond # 
+# Temperature -> Kelvin      #
+#                            #
+##############################
 
 ################################################
 
@@ -10,13 +18,6 @@ variable  			n_templates equal 2*${n_sizes}
 variable 			R_min equal VAR_R_min
 variable 			R_max equal VAR_R_max
 
-variable 			percen_MgO equal VAR_percen_MgO
-variable 			prop_MgO equal ${percen_MgO}/100
-variable 			prop_Al2O3 equal 1-${prop_MgO}
-
-variable 			prop_MgO_size equal ${prop_MgO}/${n_sizes}
-variable 			prop_Al2O3_size equal ${prop_Al2O3}/${n_sizes}
-
 ################################################
 
 ### Initialization
@@ -24,22 +25,24 @@ variable 			prop_Al2O3_size equal ${prop_Al2O3}/${n_sizes}
 # log name
 variable 			log_name string log4.liggghts
 
-# Variables, paso de si a micro	
+# Variables
 
-# Dimensiones dominio
-variable 			dom_radio equal 0.0155e6
+# Simulation domain, [m]*10^6 => [micron]
+variable 			dom_radius equal 0.0155e6
 variable 			zlo equal -0.001e6
 variable 			zhi equal 0.015e6
 
-# Youngs Modulus [250GPa], para la conversion de si a micro multiplicar por 10^-3
+# Young Modulus, [kg*m-1*s-1]*10^-3 => [picogram*micron-1*microsecond-1]
+# 250 GPa
 variable 			E_MgO equal 2.5e8 
 variable 			E_Al2O3 equal 2.5e8
 
-# Cohesion Energy Density 
+# Cohesion Energy Density, [J*m-3]*10^-3 == [kg*m-1*s-2]*10^-3 => [picogram*micron-1*microsecond-2]
+# 3e6 J*m-3
 variable 			CED_MgO equal 3000000e-3
 variable 			CED_Al2O3 equal 3000000e-3
 
-# Spheres 
+# Spheres, [m]*10^6 => [micron]
 variable 			rho_MgO equal 3500e-3
 variable 			rho_Al2O3 equal 3000e-3 
 variable 			nu_Al2O3 equal 0.25
@@ -48,22 +51,16 @@ variable 			nu_MgO equal 0.25
 # Neighbor extra distance beyond force cutoff
 variable 			skin equal 2*${R_min}
 
-# Dimensiones fabrica de particulas
-variable 			radio equal 0.015e6
-#fabrica2
+# Factory domain, [m]*10^6 => [micron]
+variable 			radius equal 0.015e6
 variable 			z_lo2 equal ${R_max}
 variable 			z_hi2 equal 0.012e6-${R_max}
-variable 			R_in equal ${radio}-${R_max} 
+variable 			R_in equal ${radius}-${R_max} 
 
-# Plato
+# Plate, [m]*10^6 => [micron]
 variable 			scale equal 1e3
 
-# Prensa
-variable 			com equal 0.03e6
-variable 			target_force1 equal -1000e9
-variable 			target_force2 equal 10e9
-
-# Gravedad
+# Gravity, [m*s-2]*10^-6 => [micron*microsecond-2]
 variable 			gravity equal 9.81e-6
 
 # Shear modulus
@@ -75,20 +72,17 @@ variable 			rayleigh_time equal 3.141592*${R_min}*(sqrt(${rho_Al2O3}/${shear_mod
 # TimeStep
 variable 			timestep equal 0.3*${rayleigh_time}
 
-# Altura prensa rapida [mm]
-variable 			h_prensaRapida equal 13
+# timeSteps for one simulation second
+variable 			tsInAsecond equal 1e6/${timestep}
 
-# El numero de timestep equivalentes a un segundo
-variable 			s_enTimeSteps equal 1e6/${timestep}
-
-# Dump every ...
-variable 			100fps equal ceil(${s_enTimeSteps}/100)
-variable 			1000fps equal ceil(${s_enTimeSteps}/1000)
+# Dump every ... (fps => frames per second in animation)
+variable 			100fps equal ceil(${tsInAsecond}/100)
+variable 			1000fps equal ceil(${tsInAsecond}/1000)
 
 
 ###########################################################
 # Cuantos segundos dura la simulacion?
-variable 			runTime equal ceil(0.05*${s_enTimeSteps})
+variable 			runTime equal ceil(0.05*${tsInAsecond})
 # Procentaje en volumen de insercion en factory2
 variable 			per equal 0.6
 ###########################################################
@@ -102,10 +96,10 @@ atom_modify			map array
 boundary 			f f f
 newton 				off
 communicate			single vel yes
-processors			* * 1   # Un solo nivel, los procesadores se reparten el domino en el plano XY
+processors			* * 1   # Distribute processes within XY plane
 
 # Declare domain
-region				domain cylinder z 0 0 ${dom_radio} ${zlo} ${zhi} units box
+region				domain cylinder z 0 0 ${dom_radius} ${zlo} ${zhi} units box
 read_restart 		poly.restart
 
 # log name
@@ -146,17 +140,17 @@ timestep 			${timestep}
 # Thermodynamic output settings
 thermo_style		custom step atoms ke time cpu
 thermo 				1000
-thermo_modify 		norm no lost ignore  # ignora los atomos perdidos
+thermo_modify 		norm no lost ignore  # ignore lost particles
 
-# Documento restart; siempre el mismo archivo, sobreescribiendose
+# Restart doc; replace itself everytime
 restart 			${1000fps} poly.restart poly.restart
 
-# Check time step and initialize dump file
-fix 				ctg all check/timestep/gran 1000 0.2 0.2  # antes en vez de 1000 habia un 1 (de solo comprobar una vez)
+# Check RayleighTime and HertzTime every 1000 steps if > 0.2
+fix 				ctg all check/timestep/gran 1000 0.2 0.2  
 run 1
 #unfix				ctg
 
-#dump commands
+# Initialize dump files
 dump				dmp all custom ${1000fps} post/dump*.pruebas id type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius mass
 dump 				dmpstl all mesh/stl ${1000fps} post/dump*.stl
 
