@@ -1,6 +1,14 @@
-###############
-# Micro Units #
-###############
+##############################
+###############              #
+# Micro Units #              #
+###############              #
+#				             #
+# Length      -> micron      #
+# Mass   	  -> picogram    #
+# Time 	 	  -> microsecond # 
+# Temperature -> Kelvin      #
+#                            #
+##############################
 
 ################################################
 
@@ -31,23 +39,27 @@ variable 			prop_Al2O3 equal 1-${prop_MgO}
 # log name
 variable 			log_name string log1.liggghts
 
-# Variables, paso de si a micro	
+# Variables
 
-# Cylinder wall dimensions
-variable 			cylin_radio equal 0.011e6
+# Simulation domain, [m]*10^6 => [micron]
+variable 			dom_radius equal 0.0155e6
+variable 			zlo equal -0.001e6
+variable 			zhi equal 0.018e6
 
-# Youngs Modulus [250GPa], para la conversion de si a micro multiplicar por 10^-3
-#variable 			E_MgO equal 2.5e8 
-#variable 			E_Al2O3 equal 2.5e8
-# Youngs Modulus [250MPa], para la conversion de si a micro multiplicar por 10^-3
-#variable 			E_MgO equal 2.5e5 
-#variable 			E_Al2O3 equal 2.5e5
+# Cylinder wall dimensions, [m]*10^6 => [micron]
+variable 			cylin_radius equal 0.011e6
 
-# Cohesion Energy Density 
+# Young Modulus, [kg*m-1*s-1]*10^-3 => [picogram*micron-1*microsecond-1]
+# 250 GPa
+variable 			E_MgO equal 2.5e8 
+variable 			E_Al2O3 equal 2.5e8
+
+# Cohesion Energy Density, [J*m-3]*10^-3 == [kg*m-1*s-2]*10^-3 => [picogram*micron-1*microsecond-2]
+# 3e6 J*m-3
 variable 			CED_MgO equal 3000000e-3
 variable 			CED_Al2O3 equal 3000000e-3
 
-# Spheres 
+# Spheres, [m]*10^6 => [micron] 
 variable 			rho_MgO equal 3500e-3
 variable 			rho_Al2O3 equal 3000e-3 
 variable 			nu_Al2O3 equal 0.25
@@ -56,28 +68,23 @@ variable 			nu_MgO equal 0.35
 # Neighbor extra distance beyond force cutoff
 variable 			skin equal 2*${R_min}
 
-# Dimensiones plato
-variable 			radio equal 0.011e6
-variable 			h_plato equal 0.008e6
+# Plate, [m]*10^6 => [micron]
+variable 			radius equal 0.011e6
+variable 			h_plate equal 0.008e6
 
-# Dimensiones fabrica de particulas
+# Factory domain, [m]*10^6 => [micron]
 variable 			z_lo2 equal ${R_max}
-variable 			z_hi2 equal ${z_lo2}+(${radio}^2*${h_plato})/((${radio}-${R_max})^2)
-variable 			z_prensa equal ceil((${z_hi2}+${R_max})/1000)
-variable 			R_in equal ${radio}-${R_max} 
+variable 			z_hi2 equal ${z_lo2}+(${radius}^2*${h_plate})/((${radius}-${R_max})^2)
+variable 			z_press equal ceil((${z_hi2}+${R_max})/1000)
+variable 			R_in equal ${radius}-${R_max} 
 
-# Dimensiones dominio
-variable 			dom_radio equal 0.0155e6
-variable 			zlo equal -0.001e6
-variable 			zhi equal ${z_prensa}+0.04e6
-
-# Plato
+# Plate, [m]*10^6 => [micron]
 variable 			scale equal 1e3
 
-# Fuerza tope para la prensa rapida [N]
+# Aproximation force [N]
 variable 			target_force equal 100 # 100 N
 
-# Gravedad
+# Gravity, [m*s-2]*10^-6 => [micron*microsecond-2]
 variable 			gravity equal 9.81e-6
 
 # Shear modulus
@@ -89,26 +96,25 @@ variable 			rayleigh_time equal 3.141592*${R_min}*(sqrt(${rho_Al2O3}/${shear_mod
 # TimeStep
 variable 			timestep equal 0.3*${rayleigh_time}
 
+# Press velocity, [m*s-1] => [micron*microsecond-1]
+variable 			pressVel equal -0.3
+# Press height [mm]
+variable 			h_press equal 13
+# Time spent in displacement [s]
+variable 			t_displace equal ((${h_press}*10^3)-${h_plate})/abs(${pressVel})
 
-# Velocidad prensa rapida
-variable 			velRapida equal -0.3
-# Altura prensa rapida [mm]
-variable 			h_prensaRapida equal 13
-# Tiempo en microsegundos hasta llegar a 8mm de altura
-variable 			t_prensaRapida equal ((${h_prensaRapida}*10^3)-${h_plato})/abs(${velRapida})
 
+# timeSteps for one simulation second
+variable 			tsInAsecond equal 1e6/${timestep}
 
-# El numero de timestep equivalentes a un segundo
-variable 			s_enTimeSteps equal 1e6/${timestep}
-
-# Dump every ...
-variable 			100fps equal ceil(${s_enTimeSteps}/100)
-variable 			1000fps equal ceil(${s_enTimeSteps}/1000)
+# Dump every ... (fps => frames per second in animation)
+variable 			100fps equal ceil(${tsInAsecond}/100)
+variable 			1000fps equal ceil(${tsInAsecond}/1000)
 
 
 ###########################################################
 # Cuantos segundos dura la simulacion?
-variable 			runUpTo1 equal ceil(10*${s_enTimeSteps})
+variable 			runUpTo1 equal ceil(10*${tsInAsecond})
 # Procentaje en volumen de insercion en factory2
 variable 			per equal 0.6
 ###########################################################
@@ -122,10 +128,10 @@ atom_modify			map array
 boundary 			f f f
 newton 				off
 communicate			single vel yes
-processors			* * 1   # Un solo nivel, los procesadores se reparten el domino en el plano XY
+processors			* * 1   # Distribute processes within XY plane
 
 # Declare domain
-region				domain cylinder z 0 0 ${dom_radio} ${zlo} ${zhi} units box
+region				domain cylinder z 0 0 ${dom_radius} ${zlo} ${zhi} units box
 create_box 			2 domain
 
 # log name
@@ -159,7 +165,7 @@ fix 				m6 all property/global cohesionEnergyDensity peratomtypepair 2 ${CED_MgO
 
 ###################################################################################################
 
-# Fabricas de particulas
+# Factory
 region 				factory2 cylinder z 0 0 ${R_in} ${z_lo2} ${z_hi2} units box
 
 fix 				ins2 all insert/pack seed 1001 distributiontemplate pdd2 insert_every once overlapcheck yes maxattempt 1000 volumefraction_region ${per} region factory2 ntry_mc 1000000 
@@ -167,21 +173,21 @@ fix 				ins2 all insert/pack seed 1001 distributiontemplate pdd2 insert_every on
 
 # Import mesh from cad:
 fix 				cad1 all mesh/surface file meshes/plato_8mm_22mm.stl type 1 scale ${scale}
-fix 				prensa all mesh/surface/stress file meshes/prensa_22mm_${z_prensa}.stl type 1 scale ${scale} stress on
-fix 				move all move/mesh mesh prensa linear 0. 0. ${velRapida}
+fix 				press all mesh/surface/stress file meshes/prensa_22mm_${z_press}.stl type 1 scale ${scale} stress on
+fix 				move all move/mesh mesh press linear 0. 0. ${pressVel}
 
-# Fuerzas sobre la cara de la prensa
-# Paso de fuerza en unidades micro a si -> 1*10^-9
-variable 			ForceX equal ceil(f_prensa[1]*1e-9)
-variable 			ForceY equal ceil(f_prensa[2]*1e-9)
-variable 			ForceZ equal ceil(f_prensa[3]*1e-9)
+# Forces on press face
+# [picogram*micron*microsecond-2]*10^-9 => [kg*m*s-2] == [N]
+variable 			ForceX equal ceil(f_press[1]*1e-9)
+variable 			ForceY equal ceil(f_press[2]*1e-9)
+variable 			ForceZ equal ceil(f_press[3]*1e-9)
 
 
 # Use the imported mesh as granular wall
-fix 				granwalls all wall/gran model hertz tangential history  mesh n_meshes 2 meshes cad1 prensa
+fix 				granwalls all wall/gran model hertz tangential history  mesh n_meshes 2 meshes cad1 press
 
 # Cylinder wall
-fix 				cylinder_wall all wall/gran model hertz tangential history primitive type 1 zcylinder ${cylin_radio} 0 0
+fix 				cylinder_wall all wall/gran model hertz tangential history primitive type 1 zcylinder ${cylin_radius} 0 0
 
 # Define the physics
 pair_style 			gran model hertz tangential history cohesion sjkr
@@ -189,26 +195,29 @@ pair_coeff			* *
 
 # Integrator
 fix					integrate all nve/sphere
+
 # Gravity
 fix 				grav all gravity ${gravity} vector 0.0 0.0 -1.0
 
 # Time step
 timestep 			${timestep}
+
 # Thermodynamic output settings
 thermo_style		custom step atoms ke time cpu
 thermo 				1000
-thermo_modify 		norm no lost ignore  # ignora los atomos perdidos
+thermo_modify 		norm no lost ignore  # ignore lost particles
 
-# Documento restart; siempre el mismo archivo, sobreescribiendose
+# Restart doc; replace itself everytime
 #restart 			${1000fps} poly.restart poly.restart
 restart 			${1000fps} poly.restart poly.restart
 
-# Check time step and initialize dump file
-fix 				ctg all check/timestep/gran 1000 0.2 0.2  # antes en vez de 1000 habia un 1 (de solo comprobar una vez)
+# Check RayleighTime and HertzTime every 1000 steps if > 0.2
+fix 				ctg all check/timestep/gran 1000 0.2 0.2  
+
 run 1
 #unfix				ctg
 
-#dump commands
+# Initialize dump files
 dump				dmp all custom ${1000fps} post/dump*.pruebas id type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius mass
 fix 				dumpText all print 10 "${ForceX} ${ForceY} ${ForceZ}" screen no title "Fx[N] Fy[N] Fz[N]" file fuerzasPrensa1.txt
 dump 				dmpstl all mesh/stl ${1000fps} post/dump*.stl
