@@ -1,13 +1,13 @@
 ##############################
-###############              #
-# Micro Units #              #
-###############              #
-#				             #
-# Length      -> micron      #
-# Mass   	  -> picogram    #
-# Time 	 	  -> microsecond # 
-# Temperature -> Kelvin      #
-#                            #
+###############              
+# Micro Units #              
+###############              
+#				             
+# Length      -> micron      
+# Mass   	  -> picogram   
+# Time 	 	  -> microsecond  
+# Temperature -> Kelvin      
+#                            
 ##############################
 
 ################################################
@@ -132,11 +132,13 @@ pair_coeff			* *
 
 # Integrator
 fix					integrate all nve/sphere
+
 # Gravity
 fix 				grav all gravity ${gravity} vector 0.0 0.0 -1.0
 
 # Time step
 timestep 			${timestep}
+
 # Thermodynamic output settings
 thermo_style		custom step atoms ke time cpu
 thermo 				1000

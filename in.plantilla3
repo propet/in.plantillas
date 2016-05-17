@@ -1,13 +1,13 @@
 ##############################
-###############              #
-# Micro Units #              #
-###############              #
-#				             #
-# Length      -> micron      #
-# Mass   	  -> picogram    #
-# Time 	 	  -> microsecond # 
-# Temperature -> Kelvin      #
-#                            #
+###############              
+# Micro Units #              
+###############              
+#				             
+# Length      -> micron      
+# Mass   	  -> picogram    
+# Time 	 	  -> microsecond  
+# Temperature -> Kelvin      
+#                            
 ##############################
 
 ################################################
@@ -81,7 +81,7 @@ variable 			timestep equal 0.3*${rayleigh_time}
 variable 			PressUpVel equal 0.08
 # Press displacement [mm]
 variable 			press_displace equal 6
-# Time spent in displacement
+# Time spent in displacement [s]
 variable 			t_displace equal ${press_displace}*10^-3/abs(${PressUpVel})
 
 # timeSteps for one simulation second
@@ -148,11 +148,13 @@ pair_coeff			* *
 
 # Integrator
 fix					integrate all nve/sphere
+
 # Gravity
 fix 				grav all gravity ${gravity} vector 0.0 0.0 -1.0
 
 # Time step
 timestep 			${timestep}
+
 # Thermodynamic output settings
 thermo_style		custom step atoms ke time cpu
 thermo 				1000
