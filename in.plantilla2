@@ -30,7 +30,7 @@ variable 			zlo equal -0.001e6
 variable 			zhi equal 0.018e6
 
 # Cylinder wall dimensions
-variable 			cylin_radius equal 0.015e6
+variable 			cylin_radius equal 0.011e6
 
 # Young Modulus, [kg*m-1*s-1]*10^-3 => [picogram*micron-1*microsecond-1]
 # 250 GPa
@@ -143,9 +143,9 @@ fix 				move all move/mesh mesh press linear 0. 0. ${pressVel}
 
 # Forces on press face
 # [picogram*micron*microsecond-2]*10^-9 => [kg*m*s-2] == [N]
-variable 			ForceX equal ceil(f_press[1]*1e-6)
-variable 			ForceY equal ceil(f_press[2]*1e-6)
-variable 			ForceZ equal ceil(f_press[3]*1e-6)
+variable 			ForceX equal ceil(f_press[1]*1e-9)
+variable 			ForceY equal ceil(f_press[2]*1e-9)
+variable 			ForceZ equal ceil(f_press[3]*1e-9)
 
 
 # Use the imported mesh as granular wall

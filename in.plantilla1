@@ -180,9 +180,9 @@ fix 				move all move/mesh mesh press linear 0. 0. ${pressVel}
 
 # Forces on press face
 # [picogram*micron*microsecond-2]*10^-9 => [kg*m*s-2] == [N]
-variable 			ForceX equal ceil(f_press[1]*1e-6)
-variable 			ForceY equal ceil(f_press[2]*1e-6)
-variable 			ForceZ equal ceil(f_press[3]*1e-6)
+variable 			ForceX equal ceil(f_press[1]*1e-9)
+variable 			ForceY equal ceil(f_press[2]*1e-9)
+variable 			ForceZ equal ceil(f_press[3]*1e-9)
 
 
 # Use the imported mesh as granular wall
