@@ -100,9 +100,9 @@ variable 			timestep equal 0.3*${rayleigh_time}     # 30% RayleighTime
 # Press velocity
 variable 			pressVel equal -0.3
 # Press Height [mm]
-variable 			h_press equal 13
+#variable 			press_displace equal 5
 # Time spent in displacement [s]
-variable 			t_displace equal ((${h_press}*10^3)-${h_plate})/abs(${pressVel})
+#variable 			t_displace equal (${press_displace}*10^-3)/abs(${pressVel})
 
 
 # timeSteps for one simulation second
