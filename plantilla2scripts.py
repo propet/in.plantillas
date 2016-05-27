@@ -23,7 +23,8 @@ prop_step = 5       # Paso porcentual en la proporcion de MgO en la mezcla
 mu_step = 300	    # micras
 sigma_step = 50
 # Numero de diferentes radios para aproximar la distribucion gausiana con valores discretos
-n_sizes = 30.0 # Importante tomar este valor como un float
+n_radios = 30.0
+n_sizes = n_radios + 1 # Importante tomar este valor como un float
 radioMinimoConsiderado = 100
 
 ##########################################
@@ -48,7 +49,7 @@ for percen_MgO in range(50,100+prop_step,prop_step):
  			interFile.write("%.3f\n %.3f\n" % (mu, sigma)) # Las dos primeras lineas detallan mu y sigma
  			radio = []
  			for i in range(0,int(n_sizes)):
- 				radio.append((mu - 3*sigma)+(6*sigma/n_sizes)*i)
+ 				radio.append((mu - 3*sigma)+(6*sigma/(n_sizes-1))*i)
  				if(radio[i] >= radioMinimoConsiderado):
  					interFile.write("%.3f\n" % radio[i])
 
