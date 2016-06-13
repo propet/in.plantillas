@@ -29,7 +29,7 @@ for proporcion in MgO:
 		directorioMgO.sort()
 
 		for caso in directorioMgO:
-			if(caso.endswith('1100')):
+			if(caso.endswith('1450')):
 				os.chdir(directorioProporcion + '/' + caso)
 				os.system('python ejecuta.py')
 				# archivos dump para posible renderizado posterior
