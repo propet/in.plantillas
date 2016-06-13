@@ -23,7 +23,7 @@ prop_step = 5       # Paso porcentual en la proporcion de MgO en la mezcla
 mu_step = 300	    # micras
 sigma_step = 50
 # Numero de diferentes radios para aproximar la distribucion gausiana con valores discretos
-n_radios = 30.0
+n_radios = 10.0
 n_sizes = n_radios + 1 # Importante tomar este valor como un float
 radioMinimoConsiderado = 100
 

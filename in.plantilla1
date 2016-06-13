@@ -75,7 +75,7 @@ variable 			h_plate equal 0.008e6
 # Factory domain, [m]*10^6 => [micron]
 variable 			z_lo2 equal ${R_max}
 variable 			z_hi2 equal ${z_lo2}+(${radius}^2*${h_plate})/((${radius}-${R_max})^2)
-variable 			z_press equal ceil((${z_hi2}+${R_max})/1000)
+variable 			z_press equal ceil((${z_hi2}+${R_max})/1000)*1000
 variable 			R_in equal ${radius}-${R_max} 
 
 # Plate, [m]*10^6 => [micron]
@@ -173,7 +173,7 @@ fix 				ins2 all insert/pack seed 1001 distributiontemplate pdd2 insert_every on
 
 # Import mesh from cad:
 fix 				cad1 all mesh/surface file meshes/plato_8mm_22mm.stl type 1 scale ${scale}
-fix 				press all mesh/surface/stress file meshes/prensa_22mm_${z_press}.stl type 1 scale ${scale} stress on
+fix 				press all mesh/surface/stress file meshes/prensa_22mm_0.stl type 1 scale ${scale} move 0 0 ${z_press} stress on
 fix 				move all move/mesh mesh press linear 0. 0. ${pressVel}
 
 # Forces on press face
