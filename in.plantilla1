@@ -18,10 +18,10 @@
 ################################################
 
 # Masa, [g]*10^12 => [pg]
-#variable           MgO_mass equal 7.3e12
-#variable           Al2O3_mass equal 1.83e12
+variable            MgO_mass equal 7.3e12
+variable            Al2O3_mass equal 1.83e12
 
-variable 			R_min equal 205/2
+variable 			R_min equal 240/2
 variable 			R_max equal 3000/2
 
 ################################################
@@ -91,7 +91,7 @@ variable 			h_plate equal 0.008e6
 
 # Factory domain, [m]*10^6 => [micron]
 variable 			z_lo2 equal ${R_max}
-variable 			z_hi2 equal ${z_lo2}+(${radius}^2*${h_plate})/((${radius}-${R_max})^2)
+variable 			z_hi2 equal 1.2*(${z_lo2}+(${radius}^2*${h_plate})/((${radius}-${R_max})^2))
 variable 			z_press equal ceil(${z_hi2}+${R_max})
 variable 			R_in equal ${radius}-${R_max} 
 
@@ -195,11 +195,12 @@ fix ptsMgO_9 all particletemplate/sphere 1 atom_type 1 density constant ${rho_Mg
 fix ptsAl2O3_1 all particletemplate/sphere 1 atom_type 2 density constant ${rho_Al2O3} radius constant ${rAl2O3_1}
 
 
-fix pdd1 all particledistribution/discrete 5430 10 ptsMgO_1 ${porcenMgO_1} ptsMgO_2 ${porcenMgO_2} ptsMgO_3 ${porcenMgO_3} ptsMgO_4 ${porcenMgO_4} ptsMgO_5 ${porcenMgO_5} ptsMgO_6 ${porcenMgO_6} ptsMgO_7 ${porcenMgO_7} ptsMgO_8 ${porcenMgO_8} ptsMgO_9 ${porcenMgO_9}
+fix pdd1 all particledistribution/discrete 5430 9 ptsMgO_1 ${porcenMgO_1} ptsMgO_2 ${porcenMgO_2} ptsMgO_3 ${porcenMgO_3} ptsMgO_4 ${porcenMgO_4} ptsMgO_5 ${porcenMgO_5} ptsMgO_6 ${porcenMgO_6} ptsMgO_7 ${porcenMgO_7} ptsMgO_8 ${porcenMgO_8} ptsMgO_9 ${porcenMgO_9}
 
-fix pdd2 all particledistribution/discrete 430 1 ptsAl2O3 ${porcenAl2O3_1}
+fix pdd2 all particledistribution/discrete 430 1 ptsAl2O3_1 ${porcenAl2O3_1}
 
 ###################################################################################################
+
 
 # Factory
 region 				factory cylinder z 0 0 ${R_in} ${z_lo2} ${z_hi2} units box
@@ -208,7 +209,7 @@ region 				factory cylinder z 0 0 ${R_in} ${z_lo2} ${z_hi2} units box
 
 fix 				ins1 all insert/pack seed 1001 distributiontemplate pdd1 insert_every once overlapcheck yes maxattempt 1000 mass_in_region ${MgO_mass} region factory ntry_mc 1000000 
 fix 				ins2 all insert/pack seed 1001 distributiontemplate pdd2 insert_every once overlapcheck yes maxattempt 1000 mass_in_region ${Al2O3_mass} region factory ntry_mc 1000000 
-
+print "weeee"
 
 # Import mesh from cad:
 fix 				cad1 all mesh/surface file meshes/plato_8mm_22mm.stl type 1 scale ${scale}
@@ -265,4 +266,5 @@ dump 				dmpstl all mesh/stl ${1000fps} post/dump*.stl
 #run
 
 #run 				${runUpTo1} every 100 "if '${ForceZ}>${target_force}' then quit"
-run 				${runUpTo1}
+#run 				${runUpTo1}
+run 1
