@@ -10,18 +10,48 @@
 #                            
 ##############################
 
+# Mezcla 802000
+# Compuesta por:
+# -> 7.3 g de magnesia (0-1 mm)  (80% de la masa total)
+# -> 1.83 g de alumina calcinada (20% de la masa total)
+
 ################################################
+
+# Masa, [g]*10^12 => [pg]
+#variable           MgO_mass equal 7.3e12
+#variable           Al2O3_mass equal 1.83e12
 
 variable 			R_min equal 205/2
 variable 			R_max equal 3000/2
 
 ################################################
+# radios MgO
+variable 			rMgO_1 equal 62.5/2
+variable 			rMgO_2 equal 142.5/2
+variable 			rMgO_3 equal 240/2
+variable 			rMgO_4 equal 410/2
+variable 			rMgO_5 equal 565/2
+variable 			rMgO_6 equal 715/2
+variable 			rMgO_7 equal 1025/2
+variable 			rMgO_8 equal 1425/2
+variable 			rMgO_9 equal 2050/2
 
-variable 			r0 equal 205/2
-variable 			r1 equal 375/2
-variable 			r2 equal 750/2
-variable 			r3 equal 1500/2
-variable 			r4 equal 3000/2
+# porcentajes en masa de los distintos radios de MgO
+variable            porcenMgO_1 equal 0.15628
+variable            porcenMgO_2 equal 0.09912
+variable            porcenMgO_3 equal 0.18519
+variable            porcenMgO_4 equal 0.10668
+variable            porcenMgO_5 equal 0.07918
+variable            porcenMgO_6 equal 0.09836
+variable            porcenMgO_7 equal 0.25286
+variable            porcenMgO_8 equal 0.022
+variable            porcenMgO_9 equal 0.00005
+
+# radios Al2O3
+variable            rAl2O3_1 equal 50/2
+
+# porcentajes en masa de los distintos radios de Al2O3
+variable 			porcenAl2O3_1 equal 1
 
 ################################################
 ###################################################################################################
@@ -89,12 +119,12 @@ variable 			rayleigh_time equal 3.141592*${R_min}*(sqrt(${rho_Al2O3}/${shear_mod
 # TimeStep
 variable 			timestep equal 0.3*${rayleigh_time}
 
-# Press velocity
+# Press velocity, [m*s-1] => [micron*microsecond-1]
 variable 			pressVel equal -0.3
-# Press Height [mm]
-variable 			h_press equal 13
+# Press displacement [mm]
+variable 			press_displace equal 4
 # Time spent in displacement [s]
-variable 			t_displace equal ((${h_press}*10^3)-${h_plate})/abs(${pressVel})
+variable 			t_displace equal ${press_displace}*10^-3/abs(${pressVel})
 
 
 # timeSteps for one simulation second
@@ -107,9 +137,10 @@ variable 			1000fps equal ceil(${tsInAsecond}/1000)
 
 ###########################################################
 # Cuantos segundos dura la simulacion?
-variable 			runUpTo1 equal ceil(10*${tsInAsecond})
-# Procentaje en volumen de insercion en factory2
-variable 			per equal 0.7
+variable 			runUpTo1 equal ceil(0.018*${tsInAsecond})
+#variable 			runUpTo1 equal ceil(${t_displace}*${tsInAsecond})
+# Procentaje en volumen de insercion en factory
+#variable 			per equal 0.7
 ###########################################################
 
 
@@ -151,26 +182,32 @@ fix 				m6 all property/global cohesionEnergyDensity peratomtypepair 2 ${CED_MgO
 # Uniform mass insertion #
 ##########################
 
-fix pts0 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${r0}
-fix pts2 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${r1}
-fix pts4 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${r2}
-fix pts6 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${r3}
-fix pts8 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${r4}
+fix ptsMgO_1 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_1}
+fix ptsMgO_2 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_2}
+fix ptsMgO_3 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_3}
+fix ptsMgO_4 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_4}
+fix ptsMgO_5 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_5}
+fix ptsMgO_6 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_6}
+fix ptsMgO_7 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_7}
+fix ptsMgO_8 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_8}
+fix ptsMgO_9 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_9}
 
-fix pts1 all particletemplate/sphere 1 atom_type 2 density constant ${rho_Al2O3} radius constant ${r0}
-fix pts3 all particletemplate/sphere 1 atom_type 2 density constant ${rho_Al2O3} radius constant ${r1}
-fix pts5 all particletemplate/sphere 1 atom_type 2 density constant ${rho_Al2O3} radius constant ${r2}
-fix pts7 all particletemplate/sphere 1 atom_type 2 density constant ${rho_Al2O3} radius constant ${r3}
-fix pts9 all particletemplate/sphere 1 atom_type 2 density constant ${rho_Al2O3} radius constant ${r4}
+fix ptsAl2O3_1 all particletemplate/sphere 1 atom_type 2 density constant ${rho_Al2O3} radius constant ${rAl2O3_1}
 
-fix pdd2 all particledistribution/discrete 5430 10 pts0 0.0515 pts1 0.0009 pts2 0.0523 pts3 0.0001 pts4 0.089 pts5 0.0002 pts6 0.253 pts7 0.0005 pts8 0.21 pts9 0.0005
+
+fix pdd1 all particledistribution/discrete 5430 10 ptsMgO_1 ${porcenMgO_1} ptsMgO_2 ${porcenMgO_2} ptsMgO_3 ${porcenMgO_3} ptsMgO_4 ${porcenMgO_4} ptsMgO_5 ${porcenMgO_5} ptsMgO_6 ${porcenMgO_6} ptsMgO_7 ${porcenMgO_7} ptsMgO_8 ${porcenMgO_8} ptsMgO_9 ${porcenMgO_9}
+
+fix pdd2 all particledistribution/discrete 430 1 ptsAl2O3 ${porcenAl2O3_1}
 
 ###################################################################################################
 
 # Factory
-region 				factory2 cylinder z 0 0 ${R_in} ${z_lo2} ${z_hi2} units box
+region 				factory cylinder z 0 0 ${R_in} ${z_lo2} ${z_hi2} units box
 
-fix 				ins2 all insert/pack seed 1001 distributiontemplate pdd2 insert_every once overlapcheck yes maxattempt 1000 volumefraction_region ${per} region factory2 ntry_mc 1000000 
+#fix 				ins1 all insert/pack seed 1001 distributiontemplate pdd1 insert_every once overlapcheck yes maxattempt 1000 volumefraction_region ${per} region factory ntry_mc 1000000 
+
+fix 				ins1 all insert/pack seed 1001 distributiontemplate pdd1 insert_every once overlapcheck yes maxattempt 1000 mass_in_region ${MgO_mass} region factory ntry_mc 1000000 
+fix 				ins2 all insert/pack seed 1001 distributiontemplate pdd2 insert_every once overlapcheck yes maxattempt 1000 mass_in_region ${Al2O3_mass} region factory ntry_mc 1000000 
 
 
 # Import mesh from cad:
@@ -184,6 +221,8 @@ variable 			ForceX equal ceil(f_press[1]*1e-9)
 variable 			ForceY equal ceil(f_press[2]*1e-9)
 variable 			ForceZ equal ceil(f_press[3]*1e-9)
 
+# Wall position [mm]
+variable 			WallZ  equal (f_press[9]*1e-3)
 
 # Use the imported mesh as granular wall
 fix 				granwalls all wall/gran model hertz tangential history  mesh n_meshes 2 meshes cad1 press
@@ -220,9 +259,10 @@ run 1
 
 # Initialize dump files
 dump				dmp all custom ${1000fps} post/dump*.pruebas id type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius mass
-fix 				dumpText all print 10 "${ForceX} ${ForceY} ${ForceZ}" screen no title "Fx[N] Fy[N] Fz[N]" file fuerzasPrensa1.txt
+fix 				dumpText all print 100 "${ForceX} ${ForceY} ${ForceZ} ${WallZ}" screen no title "Fx[N] Fy[N] Fz[N] Z[mm]" file fuerzasPrensa1.txt
 dump 				dmpstl all mesh/stl ${1000fps} post/dump*.stl
 
 #run
 
-run 				${runUpTo1} every 100 "if '${ForceZ}>${target_force}' then quit"
+#run 				${runUpTo1} every 100 "if '${ForceZ}>${target_force}' then quit"
+run 				${runUpTo1}
