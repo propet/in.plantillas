@@ -62,7 +62,7 @@ variable 			gravity equal 9.81e-6
 variable 			shear_modulus equal ${E_Al2O3}/(2*(1+${nu_Al2O3}))
 
 # Rayleigh time [microseconds]
-variable 			rayleigh_time equal 3.141592*${R_min}*(sqrt(${rho_Al2O3}/${shear_modulus})/(0.1631*${nu_Al2O3}+0.8766))
+variable 			rayleigh_time equal 3.141592*${R_min}*(sqrt(${rho_Al2O3}/${shear_modulus})/(0.1631*${nu_stainlessSteel}+0.8766))
 
 # TimeStep
 variable 			timestep equal 0.3*${rayleigh_time}

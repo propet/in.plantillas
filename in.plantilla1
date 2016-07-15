@@ -25,7 +25,7 @@ variable 			total_mass equal (${MgO_mass}+${Al2O3_mass})
 variable 			porcenMgO equal ${MgO_mass}/${total_mass}
 variable 			porcenAl2O3 equal ${Al2O3_mass}/${total_mass}
 
-variable 			R_min equal 500/2
+variable 			R_min equal 300/2
 variable 			R_max equal 3200/2
 
 ################################################
@@ -50,19 +50,13 @@ variable 			rMgO_8 equal 1600/2
 variable 			rMgO_9 equal 2500/2
 variable 			rMgO_10 equal 3200/2
 
+################################################
 # porcentajes en masa de los distintos radios de MgO, 7.83g totales
 #variable            porcenMgO_1 equal 0.15628
 #variable            porcenMgO_2 equal 0.09912
 #variable            porcenMgO_3 equal 0.18519
 #variable            porcenMgO_4 equal 0.10668
-#variable            porcenMgO_5 equal 0.07918
-#variable            porcenMgO_6 equal 0.09836
-#variable            porcenMgO_7 equal 0.25286
-#variable            porcenMgO_8 equal 0.022
-#variable            porcenMgO_9 equal 0.00005
-#variable            porcenMgO_10 equal 0.00006
-################################################
-# porcentajes en masa de los distintos radios de MgO, 4.08g totales
+# size 4 gather all the mass from smaller particles
 variable            porcenMgO_4 equal 0.54724*${porcenMgO}
 variable            porcenMgO_5 equal 0.07918*${porcenMgO}
 variable            porcenMgO_6 equal 0.09836*${porcenMgO}
