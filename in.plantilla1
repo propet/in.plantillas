@@ -20,38 +20,63 @@
 # Masa, [g]*10^12 => [pg]
 variable            MgO_mass equal 7.3e12
 variable            Al2O3_mass equal 1.83e12
+variable 			total_mass equal (${MgO_mass}+${Al2O3_mass})
 
-variable 			R_min equal 240/2
-variable 			R_max equal 3000/2
+variable 			porcenMgO equal ${MgO_mass}/${total_mass}
+variable 			porcenAl2O3 equal ${Al2O3_mass}/${total_mass}
+
+variable 			R_min equal 500/2
+variable 			R_max equal 3200/2
 
 ################################################
-# radios MgO
-variable 			rMgO_1 equal 62.5/2
-variable 			rMgO_2 equal 142.5/2
-variable 			rMgO_3 equal 240/2
-variable 			rMgO_4 equal 410/2
-variable 			rMgO_5 equal 565/2
-variable 			rMgO_6 equal 715/2
-variable 			rMgO_7 equal 1025/2
-variable 			rMgO_8 equal 1425/2
-variable 			rMgO_9 equal 2050/2
+# radios MgO, diametro media de los pasos de los filtros
+#variable 			rMgO_1 equal 62.5/2
+#variable 			rMgO_2 equal 142.5/2
+#variable 			rMgO_3 equal 240/2
+#variable 			rMgO_4 equal 410/2
+#variable 			rMgO_5 equal 565/2
+#variable 			rMgO_6 equal 715/2
+#variable 			rMgO_7 equal 1025/2
+#variable 			rMgO_8 equal 1425/2
+#variable 			rMgO_9 equal 2050/2
+#variable 			rMgO_10 equal 2500/2
+################################################
+# radios MgO, diametro igual al diametro del filtro que pasan
+variable 			rMgO_4 equal 500/2
+variable 			rMgO_5 equal 630/2
+variable 			rMgO_6 equal 800/2
+variable 			rMgO_7 equal 1250/2
+variable 			rMgO_8 equal 1600/2
+variable 			rMgO_9 equal 2500/2
+variable 			rMgO_10 equal 3200/2
 
-# porcentajes en masa de los distintos radios de MgO
-variable            porcenMgO_1 equal 0.15628
-variable            porcenMgO_2 equal 0.09912
-variable            porcenMgO_3 equal 0.18519
-variable            porcenMgO_4 equal 0.10668
-variable            porcenMgO_5 equal 0.07918
-variable            porcenMgO_6 equal 0.09836
-variable            porcenMgO_7 equal 0.25286
-variable            porcenMgO_8 equal 0.022
-variable            porcenMgO_9 equal 0.00005
+# porcentajes en masa de los distintos radios de MgO, 7.83g totales
+#variable            porcenMgO_1 equal 0.15628
+#variable            porcenMgO_2 equal 0.09912
+#variable            porcenMgO_3 equal 0.18519
+#variable            porcenMgO_4 equal 0.10668
+#variable            porcenMgO_5 equal 0.07918
+#variable            porcenMgO_6 equal 0.09836
+#variable            porcenMgO_7 equal 0.25286
+#variable            porcenMgO_8 equal 0.022
+#variable            porcenMgO_9 equal 0.00005
+#variable            porcenMgO_10 equal 0.00006
+################################################
+# porcentajes en masa de los distintos radios de MgO, 4.08g totales
+variable            porcenMgO_4 equal 0.54724*${porcenMgO}
+variable            porcenMgO_5 equal 0.07918*${porcenMgO}
+variable            porcenMgO_6 equal 0.09836*${porcenMgO}
+variable            porcenMgO_7 equal 0.25286*${porcenMgO}
+variable            porcenMgO_8 equal 0.022*${porcenMgO}
+variable            porcenMgO_9 equal 0.00005*${porcenMgO}
+variable            porcenMgO_10 equal 0.00006*${porcenMgO}
 
 # radios Al2O3
-variable            rAl2O3_1 equal 50/2
+#variable            rAl2O3_1 equal 50/2
+variable            rAl2O3_1 equal 300/2
 
 # porcentajes en masa de los distintos radios de Al2O3
-variable 			porcenAl2O3_1 equal 1
+variable 			porcenAl2O3_1 equal 1*${porcenAl2O3}
 
 ################################################
 ###################################################################################################
@@ -68,19 +93,23 @@ variable 			cylin_radius equal 0.011e6
 
 # Young Modulus, [kg*m-1*s-1]*10^-3 => [picogram*micron-1*microsecond-1]
 # 250 GPa
-variable 			E_MgO equal 2.5e8 
-variable 			E_Al2O3 equal 2.5e8
+variable 			E_MgO equal 2.5e5
+variable 			E_Al2O3 equal 2.5e5
+variable 			E_stainlessSteel equal 2e5
 
 # Cohesion Energy Density, [J*m-3]*10^-3 == [kg*m-1*s-2]*10^-3 => [picogram*micron-1*microsecond-2]
 # 3e6 J*m-3
 variable 			CED_MgO equal 3000000e-3
 variable 			CED_Al2O3 equal 3000000e-3
+variable 			CED_stainlessSteel equal 3000000e-3
 
 # Spheres, [m]*10^6 => [micron]
 variable 			rho_MgO equal 3500e-3
 variable 			rho_Al2O3 equal 3000e-3 
+variable            rho_stainlessSteel equal 8000e-3
 variable 			nu_Al2O3 equal 0.25
 variable 			nu_MgO equal 0.25
+variable            nu_stainlessSteel equal 0.29
 
 # Neighbor extra distance beyond force cutoff
 variable 			skin equal 2*${R_min}
@@ -91,15 +120,16 @@ variable 			h_plate equal 0.008e6
 
 # Factory domain, [m]*10^6 => [micron]
 variable 			z_lo2 equal ${R_max}
-variable 			z_hi2 equal 1.2*(${z_lo2}+(${radius}^2*${h_plate})/((${radius}-${R_max})^2))
+                    ################
+variable 			z_hi2 equal 1.6*(${z_lo2}+(${radius}^2*${h_plate})/((${radius}-${R_max})^2))
 variable 			z_press equal ceil(${z_hi2}+${R_max})
 variable 			R_in equal ${radius}-${R_max} 
 
 # Simulation domain, [m]*10^6 => [micron]
 variable 			dom_radius equal 0.0155e6
-variable 			zlo equal -0.001e6
-#variable 			zhi equal ${z_press}+0.005e6
-variable 			zhi equal 0.025e6
+variable 			zlo equal -0.002e6
+variable 			zhi equal ${z_press}+0.002e6
+#variable 			zhi equal 0.025e6
 
 # Plate, [m]*10^6 => [micron]
 variable 			scale equal 1e3
@@ -120,9 +150,9 @@ variable 			rayleigh_time equal 3.141592*${R_min}*(sqrt(${rho_Al2O3}/${shear_mod
 variable 			timestep equal 0.3*${rayleigh_time}
 
 # Press velocity, [m*s-1] => [micron*microsecond-1]
-variable 			pressVel equal -0.3
-# Press displacement [mm]
-variable 			press_displace equal 4
+variable 			pressVel equal -0.2
+# Press displacement [mm], hasta llegar a los 8mm de altura
+variable 			press_displace equal ((${z_press}*10^-3)-8)
 # Time spent in displacement [s]
 variable 			t_displace equal ${press_displace}*10^-3/abs(${pressVel})
 
@@ -137,8 +167,8 @@ variable 			1000fps equal ceil(${tsInAsecond}/1000)
 
 ###########################################################
 # Cuantos segundos dura la simulacion?
-variable 			runUpTo1 equal ceil(0.018*${tsInAsecond})
-#variable 			runUpTo1 equal ceil(${t_displace}*${tsInAsecond})
+#variable 			runUpTo1 equal ceil(0.018*${tsInAsecond})
+variable 			runUpTo1 equal ceil(${t_displace}*${tsInAsecond})
 # Procentaje en volumen de insercion en factory
 #variable 			per equal 0.7
 ###########################################################
@@ -156,7 +186,7 @@ processors			* * 1   # Distribute processes within XY plane
 
 # Declare domain
 region				domain cylinder z 0 0 ${dom_radius} ${zlo} ${zhi} units box
-create_box 			2 domain
+create_box 			3 domain
 
 # log name
 log 				${log_name} append
@@ -168,11 +198,11 @@ neigh_modify		delay 0
 
 ### Setup
 # Material and interaction properties required
-fix 				m1 all property/global youngsModulus peratomtype ${E_MgO} ${E_Al2O3}
-fix 				m2 all property/global poissonsRatio peratomtype ${nu_MgO} ${nu_Al2O3}
-fix 				m3 all property/global coefficientRestitution peratomtypepair 2 0.5 0.5 0.5 0.5 
-fix 				m4 all property/global coefficientFriction peratomtypepair 2 0.2 0.175 0.175 0.5
-fix 				m6 all property/global cohesionEnergyDensity peratomtypepair 2 ${CED_MgO} ${CED_Al2O3} ${CED_Al2O3} ${CED_MgO}
+fix 				m1 all property/global youngsModulus peratomtype ${E_MgO} ${E_Al2O3} ${E_stainlessSteel}
+fix 				m2 all property/global poissonsRatio peratomtype ${nu_MgO} ${nu_Al2O3} ${nu_stainlessSteel}
+fix 				m3 all property/global coefficientRestitution peratomtypepair 3 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 
+fix 				m4 all property/global coefficientFriction peratomtypepair 3 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2
+fix 				m6 all property/global cohesionEnergyDensity peratomtypepair 3 ${CED_MgO} ${CED_MgO} ${CED_MgO} ${CED_MgO} ${CED_MgO} ${CED_MgO} ${CED_MgO} ${CED_MgO} ${CED_MgO}
 
 
 
@@ -182,22 +212,21 @@ fix 				m6 all property/global cohesionEnergyDensity peratomtypepair 2 ${CED_MgO
 # Uniform mass insertion #
 ##########################
 
-fix ptsMgO_1 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_1}
-fix ptsMgO_2 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_2}
-fix ptsMgO_3 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_3}
+#fix ptsMgO_1 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_1}
+#fix ptsMgO_2 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_2}
+#fix ptsMgO_3 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_3}
 fix ptsMgO_4 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_4}
 fix ptsMgO_5 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_5}
 fix ptsMgO_6 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_6}
 fix ptsMgO_7 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_7}
 fix ptsMgO_8 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_8}
 fix ptsMgO_9 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_9}
+fix ptsMgO_10 all particletemplate/sphere 1 atom_type 1 density constant ${rho_MgO} radius constant ${rMgO_10}
 
 fix ptsAl2O3_1 all particletemplate/sphere 1 atom_type 2 density constant ${rho_Al2O3} radius constant ${rAl2O3_1}
 
 
-fix pdd1 all particledistribution/discrete 5430 9 ptsMgO_1 ${porcenMgO_1} ptsMgO_2 ${porcenMgO_2} ptsMgO_3 ${porcenMgO_3} ptsMgO_4 ${porcenMgO_4} ptsMgO_5 ${porcenMgO_5} ptsMgO_6 ${porcenMgO_6} ptsMgO_7 ${porcenMgO_7} ptsMgO_8 ${porcenMgO_8} ptsMgO_9 ${porcenMgO_9}
-
-fix pdd2 all particledistribution/discrete 430 1 ptsAl2O3_1 ${porcenAl2O3_1}
+fix pdd1 all particledistribution/discrete 5430 8 ptsMgO_4 ${porcenMgO_4} ptsMgO_5 ${porcenMgO_5} ptsMgO_6 ${porcenMgO_6} ptsMgO_7 ${porcenMgO_7} ptsMgO_8 ${porcenMgO_8} ptsMgO_9 ${porcenMgO_9} ptsMgO_10 ${porcenMgO_10} ptsAl2O3_1 ${porcenAl2O3_1}
 
 ###################################################################################################
 
@@ -205,15 +234,13 @@ fix pdd2 all particledistribution/discrete 430 1 ptsAl2O3_1 ${porcenAl2O3_1}
 # Factory
 region 				factory cylinder z 0 0 ${R_in} ${z_lo2} ${z_hi2} units box
 
-#fix 				ins1 all insert/pack seed 1001 distributiontemplate pdd1 insert_every once overlapcheck yes maxattempt 1000 volumefraction_region ${per} region factory ntry_mc 1000000 
+fix 				ins1 all insert/pack seed 1001 distributiontemplate pdd1 insert_every once overlapcheck yes maxattempt 2000 mass_in_region ${total_mass} region factory ntry_mc 1000000 
 
-fix 				ins1 all insert/pack seed 1001 distributiontemplate pdd1 insert_every once overlapcheck yes maxattempt 1000 mass_in_region ${MgO_mass} region factory ntry_mc 1000000 
-fix 				ins2 all insert/pack seed 1001 distributiontemplate pdd2 insert_every once overlapcheck yes maxattempt 1000 mass_in_region ${Al2O3_mass} region factory ntry_mc 1000000 
-print "weeee"
 
 # Import mesh from cad:
-fix 				cad1 all mesh/surface file meshes/plato_8mm_22mm.stl type 1 scale ${scale}
-fix 				press all mesh/surface/stress file meshes/prensa_22mm_0.stl type 1 scale ${scale} move 0 0 ${z_press} stress on
+fix 				cad0 all mesh/surface file meshes/base0.stl type 3 scale ${scale}
+fix 				cad1 all mesh/surface file meshes/plato_8mm_22mm.stl type 3 scale ${scale}
+fix 				press all mesh/surface/stress file meshes/prensa_22mm_0.stl type 3 scale ${scale} move 0 0 ${z_press} stress on
 fix 				move all move/mesh mesh press linear 0. 0. ${pressVel}
 
 # Forces on press face
@@ -226,10 +253,10 @@ variable 			ForceZ equal ceil(f_press[3]*1e-9)
 variable 			WallZ  equal (f_press[9]*1e-3)
 
 # Use the imported mesh as granular wall
-fix 				granwalls all wall/gran model hertz tangential history  mesh n_meshes 2 meshes cad1 press
+fix 				granwalls all wall/gran model hertz tangential history  mesh n_meshes 3 meshes cad0 cad1 press
 
 # Cylinder wall
-fix 				cylinder_wall all wall/gran model hertz tangential history primitive type 1 zcylinder ${cylin_radius} 0 0
+fix 				cylinder_wall all wall/gran model hertz tangential history primitive type 3 zcylinder ${cylin_radius} 0 0
 
 # Define the physics
 pair_style 			gran model hertz tangential history cohesion sjkr
@@ -266,5 +293,5 @@ dump 				dmpstl all mesh/stl ${1000fps} post/dump*.stl
 #run
 
 #run 				${runUpTo1} every 100 "if '${ForceZ}>${target_force}' then quit"
-#run 				${runUpTo1}
-run 1
+run 				${runUpTo1}
+
