@@ -67,7 +67,7 @@ variable            porcenMgO_10 equal 0.00006*${porcenMgO}
 
 # radios Al2O3
 #variable            rAl2O3_1 equal 50/2
-variable            rAl2O3_1 equal 300/2
+variable            rAl2O3_1 equal 500/2
 
 # porcentajes en masa de los distintos radios de Al2O3
 variable 			porcenAl2O3_1 equal 1*${porcenAl2O3}
@@ -141,7 +141,7 @@ variable 			shear_modulus equal ${E_Al2O3}/(2*(1+${nu_Al2O3}))
 variable 			rayleigh_time equal 3.141592*${R_min}*(sqrt(${rho_Al2O3}/${shear_modulus})/(0.1631*${nu_Al2O3}+0.8766))
 
 # TimeStep
-variable 			timestep equal 0.3*${rayleigh_time}
+variable 			timestep equal 0.1*${rayleigh_time}
 
 # Press velocity, [m*s-1] => [micron*microsecond-1]
 variable 			pressVel equal -0.2
