@@ -78,7 +78,7 @@ variable 			rayleigh_time equal 3.141592*${R_min}*(sqrt(${rho_Al2O3}/${shear_mod
 variable 			timestep equal 0.1*${rayleigh_time}
 
 # Press velocity
-variable 			pressUpVel equal 0.2
+variable 			pressUpVel equal 0.1
 # Press displacement [mm]
 variable 			press_displace equal 5
 # Time spent in displacement [s]
@@ -137,6 +137,14 @@ fix 				cad1 all mesh/surface file meshes/plato_8mm_22mm.stl type 3 scale ${scal
 fix 				press all mesh/surface/stress file meshes/prensa_22mm_0.stl type 3 scale ${scale} stress on
 fix 				move all move/mesh mesh press linear 0. 0. ${pressUpVel}
 
+# Forces on press face
+# [picogram*micron*microsecond-2]*10^-9 => [kg*m*s-2] == [N]
+variable 			ForceX equal ceil(f_press[1]*1e-9)
+variable 			ForceY equal ceil(f_press[2]*1e-9)
+variable 			ForceZ equal ceil(f_press[3]*1e-9)
+
+# Wall position [mm]
+variable 			WallZ  equal (f_press[9]*1e-3)
 
 # Use the imported mesh as granular wall
 fix 				granwalls all wall/gran model hertz tangential history  mesh n_meshes 3 meshes cad0 cad1 press
@@ -170,7 +178,7 @@ run 1
 
 # Initialize dump files
 dump				dmp all custom ${1000fps} post/dump*.pruebas id type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius mass
-fix 				dumpText all print 100 "${ForceX} ${ForceY} ${ForceZ} ${WallZ}" screen no title "Fx[N] Fy[N] Fz[N] Z[mm]" file fuerzasPrensa3.txt
+fix 				dumpText all print 10 "${ForceX} ${ForceY} ${ForceZ} ${WallZ}" screen no title "Fx[N] Fy[N] Fz[N] Z[mm]" file fuerzasPrensa3.txt
 dump 				dmpstl all mesh/stl ${1000fps} post/dump*.stl
 
 #run
