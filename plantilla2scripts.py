@@ -4,7 +4,8 @@ import os
 '''
 	Crea los casos a simular a partir de una plantilla.
 	Radios unicos para las particulas.
-	Los scripts input que comparten la misma proporcion se guardan en un mismo directorio.
+	Los scripts input que comparten las mismas proporciones de MgO y Al2O3
+    se guardan en un mismo directorio.
 '''
 
 #############
@@ -14,20 +15,21 @@ import os
 # Radios minimo y maximo considerados
 Rmin_lab = 100 		# micras
 Rmax_lab = 1500 	# micras
+
 # Steps
 prop_step = 5       # Paso porcentual en la proporcion de MgO en la mezcla
-R_step = 200	    # micras
-# Numero de diferentes radios para aproximar la distribucion uniforme con valores discretos
-n_sizes = 100
+R_step = 200	    # Paso en micras entre radios considerados
 
 
 ##########################################
 #   Experimentos con radios constantes   #
 ##########################################
 
-# Vacia el contenido de scripts para dejar lugar a los nuevos experimentos
+# Crea la carpeta scripts donde se ordenaran los diferentes casos creados.
+# Vacia su contenido por si acaso quedan casos generados anteriormente.
+os.system("sudo mkdir scripts")
 os.system("sudo rm -r ./scripts/*")
-	
+
 # Variacion de las proporciones en la mezcla
 for percen_MgO in range(50,100+prop_step,prop_step):
 	# Directorios para ordenar por proporciones

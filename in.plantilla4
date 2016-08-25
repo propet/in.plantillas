@@ -74,7 +74,7 @@ variable 			1000fps equal ceil(${tsInAsecond}/1000)
 # Cuantos segundos dura la simulacion?
 variable 			runTime equal ceil(0.05*${tsInAsecond})
 # Procentaje en volumen de insercion en factory2
-variable 			per equal 0.6
+variable 			per equal 0.5
 ###########################################################
 
 
