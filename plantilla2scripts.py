@@ -19,7 +19,7 @@ Rmax_lab = 1500 	# micras
 prop_step = 5       # Paso porcentual en la proporcion de MgO en la mezcla
 R_step = 200	    # micras
 # Numero de diferentes radios para aproximar la distribucion uniforme con valores discretos
-n_sizes = 100
+n_sizes = 20
 
 
 ##########################################
