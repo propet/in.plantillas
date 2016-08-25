@@ -1,7 +1,5 @@
 import os
 import glob
-import math
-import numpy as np
 
 os.system('mpirun -np * liggghts < in1.MgO_proporcion_Rmin_radioMinimo_Rmax_radioMaximo')
 os.system('mpirun -np * liggghts < in2.MgO_proporcion_Rmin_radioMinimo_Rmax_radioMaximo')
