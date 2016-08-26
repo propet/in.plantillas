@@ -194,4 +194,5 @@ dump 				dmpstl all mesh/stl ${1000fps} post/dump*.stl
 
 #run
 
-run 				${run1}
+#run 				${run1}
+run 				1
