@@ -31,7 +31,8 @@ radioMinimoConsiderado = 100
 # Experimentos con distribucion gausiana #
 ##########################################
 
-# Vacia el contenido de scripts para dejar lugar a los nuevos experimentos
+# Crea o vacia el contenido de scripts para dejar lugar a los nuevos experimentos
+os.system("sudo mkdir ./scripts")
 os.system("sudo rm -r ./scripts/*")
 
 # Variacion de las proporciones en la mezcla, de 50 a 100% de MgO
@@ -44,34 +45,35 @@ for percen_MgO in range(50,100+prop_step,prop_step):
 		for sigma in range(sigma_min, sigma_max+sigma_step, sigma_step):
 
 
- 			# Creacion de intervalos y archivo con intervalos. n_sizes entre (mu-3sigma) y (mu+3sigma).
- 			interFile = open('intervalos.txt','w')
- 			interFile.write("%.3f\n %.3f\n" % (mu, sigma)) # Las dos primeras lineas detallan mu y sigma
- 			radio = []
- 			for i in range(0,int(n_sizes)):
- 				radio.append((mu - 3*sigma)+(6*sigma/(n_sizes-1))*i)
- 				if(radio[i] >= radioMinimoConsiderado):
- 					interFile.write("%.3f\n" % radio[i])
+			# Creacion de intervalos y archivo con intervalos. n_sizes entre (mu-3sigma) y (mu+3sigma).
+			interFile = open('intervalos.txt','w')
+			interFile.write("%.3f\n %.3f\n" % (mu, sigma)) # Las dos primeras lineas detallan mu y sigma
+			radio = []
+			for i in range(0,int(n_sizes)):
+				radio.append((mu - 3*sigma)+(6*sigma/(n_sizes-1))*i)
+				if(radio[i] >= radioMinimoConsiderado):
+					interFile.write("%.3f\n" % radio[i])
 
- 			interFile.close()
+			interFile.close()
 
- 			# Se toma el radio medio entre dos puntos
- 			R = []
- 			for i in range(0,len(radio)-1):
- 				if(radio[i] >= radioMinimoConsiderado):
- 					R.append((radio[i]+radio[i+1])/2)
+			# Se toma el radio medio entre dos puntos
+			R = []
+			for i in range(0,len(radio)-1):
+				if(radio[i] >= radioMinimoConsiderado):
+					R.append((radio[i]+radio[i+1])/2)
 
- 			R_min = R[0]
- 			R_max = R[-1]
- 			os.system("octave GaussPercen.m")
+			R_min = R[0]
+			R_max = R[-1]
+			os.system("octave GaussPercen.m")
 
- 			# Lee resultados con las propociones en masa de cada intervalo
- 			resultados = open('proporciones.txt','r')
- 			proporciones = []
- 			for line in resultados.readlines():
- 				proporciones.append(line)
+			# Lee resultados con las propociones en masa de cada intervalo
+			resultados = open('proporciones.txt','r')
+			proporciones = []
 
-			resultados.close()		
+			for line in resultados.readlines():
+				proporciones.append(line)
+
+			resultados.close()
 			proporciones = list(map(float, proporciones))
 
 			# Carpetas para albergar la geometria y resultados de la simulacion
@@ -85,15 +87,15 @@ for percen_MgO in range(50,100+prop_step,prop_step):
 			os.system("sed -e 's/VAR_n_sizes/%d/g' -e 's/VAR_percen_MgO/%.1f/g' -e 's/VAR_mu/%.0f/g' \
 			  -e 's/VAR_sigma/%.0f/g' -e 's/VAR_R_min/%.0f/g' -e 's/VAR_R_max/%.0f/g' \
 			  in.plantilla1 > scripts/%s/in1.MgO_%.1f_mu%.0f_sigma%.0f" % (len(R)	, percen_MgO, mu, sigma,
-			  R_min, R_max, 'input_MgO-%.1f/mu%.0f_sigma%.0f' % (percen_MgO, mu, sigma), percen_MgO, mu, sigma))
+																		   R_min, R_max, 'input_MgO-%.1f/mu%.0f_sigma%.0f' % (percen_MgO, mu, sigma), percen_MgO, mu, sigma))
 			os.system("sed -e 's/VAR_R_min/%.0f/g' -e 's/VAR_R_max/%.0f/g' in.plantilla2 > \
 			  scripts/%s/in2.MgO_%.1f_mu%.0f_sigma%.0f" % (R_min, R_max, 'input_MgO-%.1f/mu%.0f_sigma%.0f' % 
-			  (percen_MgO, mu, sigma), percen_MgO, mu, sigma))
+														   (percen_MgO, mu, sigma), percen_MgO, mu, sigma))
 			os.system("sed -e 's/VAR_R_min/%.0f/g' -e 's/VAR_R_max/%.0f/g' in.plantilla3 > \
 			  scripts/%s/in3.MgO_%.1f_mu%.0f_sigma%.0f" % (R_min, R_max, 'input_MgO-%.1f/mu%.0f_sigma%.0f' % 
-			  (percen_MgO, mu, sigma), percen_MgO, mu, sigma))
+														   (percen_MgO, mu, sigma), percen_MgO, mu, sigma))
 			os.system("sed -e 's/VAR_R_min/%.0f/g' in.plantilla4 > scripts/%s/in4.MgO_%.1f_mu%.0f_sigma%.0f" % 
-			  (R_min, 'input_MgO-%.1f/mu%.0f_sigma%.0f' % (percen_MgO, mu, sigma), percen_MgO, mu, sigma))
+					  (R_min, 'input_MgO-%.1f/mu%.0f_sigma%.0f' % (percen_MgO, mu, sigma), percen_MgO, mu, sigma))
 
 			#############################################################################
 			# Lineas para el input script con los radios y las plantillas de particulas #
@@ -106,15 +108,15 @@ for percen_MgO in range(50,100+prop_step,prop_step):
 				radiusString = radiusString + "\n" + ("variable r%d equal %.3f" % (i, R[i]))
 				# Introduce las diferentes plantillas de las particulas
 				templatesString = templatesString + "\n" + ("fix pts%d all particletemplate/sphere "
-				  "1 atom_type 1 density constant ${rho_MgO} radius constant ${r%d}") % (2*i, i)
+															"1 atom_type 1 density constant ${rho_MgO} radius constant ${r%d}") % (2*i, i)
 				templatesString = templatesString + "\n" + ("fix pts%d all particletemplate/sphere "
-				  "1 atom_type 2 density constant ${rho_Al2O3} radius constant ${r%d}") % (2*i+1, i)
+															"1 atom_type 2 density constant ${rho_Al2O3} radius constant ${r%d}") % (2*i+1, i)
 				particledistibution = particledistibution + "pts%d %.5f pts%d %.5f " \
-				% (2*i, proporciones[i]*percen_MgO/100, 2*i+1, proporciones[i]*(100-percen_MgO)/100)
+															% (2*i, proporciones[i]*percen_MgO/100, 2*i+1, proporciones[i]*(100-percen_MgO)/100)
 
 
 			filename = "scripts/%s/in1.MgO_%.1f_mu%.0f_sigma%.0f" % ('input_MgO-%.1f/mu%.0f_sigma%.0f' \
-			  % (percen_MgO, mu, sigma), percen_MgO, mu, sigma)
+																	 % (percen_MgO, mu, sigma), percen_MgO, mu, sigma)
 			tempfileName = "scripts/%s/tempfile" % ('input_MgO-%.1f/mu%.0f_sigma%.0f' % (percen_MgO, mu, sigma))
 			file = open(filename,'r')
 			tempfile = open(tempfileName,'a')
@@ -137,14 +139,14 @@ for percen_MgO in range(50,100+prop_step,prop_step):
 
 			# Sobreescribe el archivo input 1 con el contenido del archivo temporal recien creado
 			os.system("sudo mv scripts/%s/tempfile scripts/%s/in1.MgO_%.1f_mu%.0f_sigma%.0f" \
-			  % ('input_MgO-%.1f/mu%.0f_sigma%.0f' % (percen_MgO, mu, sigma), \
-			  'input_MgO-%.1f/mu%.0f_sigma%.0f' % (percen_MgO, mu, sigma), percen_MgO, mu, sigma))
+					  % ('input_MgO-%.1f/mu%.0f_sigma%.0f' % (percen_MgO, mu, sigma), \
+						 'input_MgO-%.1f/mu%.0f_sigma%.0f' % (percen_MgO, mu, sigma), percen_MgO, mu, sigma))
 
 			# Genera archivos para la ejecucion de la simulacion completa
 			#os.system("sudo cp ./ejecuta ./scripts/input_MgO-%.1f/mu%.0f_sigma%.0f/" % (percen_MgO, mu, sigma))
 			os.system("sed -e 's/proporcion/%.1f/g' -e 's/MU/%.0f/g' -e 's/SIGMA/%.0f/g' \
 			  ./ejecuta.py > scripts/%s/ejecuta.py" % (percen_MgO, mu, sigma,
-			  'input_MgO-%.1f/mu%.0f_sigma%.0f' % (percen_MgO, mu, sigma)))
+													   'input_MgO-%.1f/mu%.0f_sigma%.0f' % (percen_MgO, mu, sigma)))
 
 
 
