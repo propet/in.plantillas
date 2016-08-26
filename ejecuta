@@ -1,6 +1,0 @@
-#!/bin/bash
-
-mpirun -np 4 liggghts < in.plantilla1
-mpirun -np 4 liggghts < in.plantilla2
-mpirun -np 4 liggghts < in.plantilla3
-mpirun -np 4 liggghts < in.plantilla4
