@@ -46,7 +46,7 @@ variable 			nu_Al2O3 equal 0.25
 variable 			nu_MgO equal 0.25
 
 # Neighbor extra distance beyond force cutoff
-variable 			skin equal 2*${R_min}
+variable 			skin equal 4*${R_min}
 
 # Plate, [m]*10^6 => [micron]
 variable 			scale equal 1e3
