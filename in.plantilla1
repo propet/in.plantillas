@@ -9,7 +9,7 @@
 # Temperature -> Kelvin      
 #                            
 ##############################
-
+	
 # Mezcla 802000
 # Compuesta por:
 # -> 7.3 g de magnesia (0-1 mm)  (80% de la masa total)
@@ -114,7 +114,7 @@ variable 			h_plate equal 0.008e6
 # Factory domain, [m]*10^6 => [micron]
 variable 			z_lo2 equal ${R_max}
                     ################
-variable 			z_hi2 equal 1.6*(${z_lo2}+(${radius}^2*${h_plate})/((${radius}-${R_max})^2))
+variable 			z_hi2 equal 2*(${z_lo2}+(${radius}^2*${h_plate})/((${radius}-${R_max})^2))
 variable 			z_press equal ceil(${z_hi2}+${R_max})
 variable 			R_in equal ${radius}-${R_max} 
 
@@ -168,8 +168,6 @@ variable 			1000fps equal ceil(${tsInAsecond}/1000)
 # Cuantos segundos dura la simulacion?
 #variable 			runUpTo1 equal ceil(0.018*${tsInAsecond})
 variable 			runUpTo1 equal ceil(${t_displace}*${tsInAsecond})
-# Procentaje en volumen de insercion en factory
-#variable 			per equal 0.7
 ###########################################################
 
 
@@ -233,7 +231,7 @@ fix pdd1 all particledistribution/discrete 5430 8 ptsMgO_4 ${porcenMgO_4} ptsMgO
 # Factory
 region 				factory cylinder z 0 0 ${R_in} ${z_lo2} ${z_hi2} units box
 
-fix 				ins1 all insert/pack seed 1001 distributiontemplate pdd1 insert_every once overlapcheck yes maxattempt 2000 mass_in_region ${total_mass} region factory ntry_mc 1000000 
+fix 				ins1 all insert/pack seed 1001 distributiontemplate pdd1 insert_every once overlapcheck yes maxattempt 5000 mass_in_region ${total_mass} region factory ntry_mc 1000000 
 
 
 # Import mesh from cad:
