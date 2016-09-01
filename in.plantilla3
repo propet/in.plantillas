@@ -78,7 +78,7 @@ variable 			rayleigh_time equal 3.141592*${R_min}*(sqrt(${rho_Al2O3}/${shear_mod
 variable 			timestep equal 0.1*${rayleigh_time}
 
 # Press velocity
-variable 			pressUpVel equal 0.1
+variable 			pressUpVel equal 0.2
 # Press displacement [mm]
 variable 			press_displace equal 5
 # Time spent in displacement [s]
@@ -173,8 +173,6 @@ restart 			${1000fps} poly.restart poly.restart
 
 # Check RayleighTime and HertzTime every 1000 steps if > 0.2
 fix 				ctg all check/timestep/gran 1000 0.2 0.2
-run 1
-#unfix				ctg
 
 # Initialize dump files
 dump				dmp all custom ${1000fps} post/dump*.pruebas id type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius mass

@@ -25,7 +25,7 @@ variable 			total_mass equal (${MgO_mass}+${Al2O3_mass})
 variable 			porcenMgO equal ${MgO_mass}/${total_mass}
 variable 			porcenAl2O3 equal ${Al2O3_mass}/${total_mass}
 
-variable 			R_min equal 300/2
+variable 			R_min equal 500/2
 variable 			R_max equal 3200/2
 
 ################################################
@@ -33,22 +33,22 @@ variable 			R_max equal 3200/2
 #variable 			rMgO_1 equal 62.5/2
 #variable 			rMgO_2 equal 142.5/2
 #variable 			rMgO_3 equal 240/2
-variable 			rMgO_4 equal 410/2
-variable 			rMgO_5 equal 565/2
-variable 			rMgO_6 equal 715/2
-variable 			rMgO_7 equal 1025/2
-variable 			rMgO_8 equal 1425/2
-variable 			rMgO_9 equal 2050/2
-variable 			rMgO_10 equal 2500/2
+#variable 			rMgO_4 equal 410/2
+#variable 			rMgO_5 equal 565/2
+#variable 			rMgO_6 equal 715/2
+#variable 			rMgO_7 equal 1025/2
+#variable 			rMgO_8 equal 1425/2
+#variable 			rMgO_9 equal 2050/2
+#variable 			rMgO_10 equal 2500/2
 ################################################
 # radios MgO, diametro igual al diametro del filtro que pasan
-#variable 			rMgO_4 equal 500/2
-#variable 			rMgO_5 equal 630/2
-#variable 			rMgO_6 equal 800/2
-#variable 			rMgO_7 equal 1250/2
-#variable 			rMgO_8 equal 1600/2
-#variable 			rMgO_9 equal 2500/2
-#variable 			rMgO_10 equal 3200/2
+variable 			rMgO_4 equal 500/2
+variable 			rMgO_5 equal 630/2
+variable 			rMgO_6 equal 800/2
+variable 			rMgO_7 equal 1250/2
+variable 			rMgO_8 equal 1600/2
+variable 			rMgO_9 equal 2500/2
+variable 			rMgO_10 equal 3200/2
 
 ################################################
 # porcentajes en masa de los distintos radios de MgO, 7.83g totales
@@ -56,7 +56,7 @@ variable 			rMgO_10 equal 2500/2
 #variable            porcenMgO_2 equal 0.09912*${porcenMgO}
 #variable            porcenMgO_3 equal 0.18519*${porcenMgO}
 # size 4 gather all the mass from smaller particles
-variable            porcenMgO_4 equal 0.10668*${porcenMgO}
+variable            porcenMgO_4 equal 0.54727*${porcenMgO}
 variable            porcenMgO_5 equal 0.07918*${porcenMgO}
 variable            porcenMgO_6 equal 0.09836*${porcenMgO}
 variable            porcenMgO_7 equal 0.25286*${porcenMgO}
@@ -66,7 +66,7 @@ variable            porcenMgO_10 equal 0.00006*${porcenMgO}
 
 # radios Al2O3
 #variable            rAl2O3_1 equal 50/2
-variable            rAl2O3_1 equal 300/2
+variable            rAl2O3_1 equal 500/2
 
 # porcentajes en masa de los distintos radios de Al2O3
 variable 			porcenAl2O3_1 equal 1*${porcenAl2O3}
@@ -281,8 +281,6 @@ restart 			${1000fps} poly.restart poly.restart
 
 # Check RayleighTime and HertzTime every 1000 steps if > 0.2
 fix 				ctg all check/timestep/gran 1000 0.2 0.2 
-run 1
-#unfix				ctg
 
 # Initialize dump files
 dump				dmp all custom ${1000fps} post/dump*.pruebas id type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius mass

@@ -9,7 +9,7 @@ os.system('sudo chmod -R 777 post')
 # Aproxima
 os.system('mpirun -np 4 liggghts < in.plantilla1')
 # Comprime
-os.system('mpirun -np 4 liggghts < in.plantilla2')
+#os.system('mpirun -np 4 liggghts < in.plantilla2')
 # Relaja
 os.system('mpirun -np 4 liggghts < in.plantilla3')
 
