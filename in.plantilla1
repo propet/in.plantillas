@@ -114,7 +114,7 @@ variable 			h_plate equal 0.008e6
 # Factory domain, [m]*10^6 => [micron]
 variable 			z_lo2 equal ${R_max}
                     ################
-variable 			z_hi2 equal 2*(${z_lo2}+(${radius}^2*${h_plate})/((${radius}-${R_max})^2))
+variable 			z_hi2 equal 2.3*(${z_lo2}+(${radius}^2*${h_plate})/((${radius}-${R_max})^2))
 variable 			z_press equal ceil(${z_hi2}+${R_max})
 variable 			R_in equal ${radius}-${R_max} 
 
@@ -279,6 +279,7 @@ restart 			${1000fps} poly.restart poly.restart
 
 # Check RayleighTime and HertzTime every 1000 steps if > 0.2
 fix 				ctg all check/timestep/gran 1000 0.2 0.2 
+run 1
 
 # Initialize dump files
 dump				dmp all custom ${1000fps} post/dump*.pruebas id type x y z ix iy iz vx vy vz fx fy fz omegax omegay omegaz radius mass
